@@ -31,11 +31,16 @@ export const PatientHomePage: React.FC = () => {
           </Panel>
         </Link>
 
-        <Panel className="flex flex-col gap-1">
-          <span className="type-caption text-mut font-semibold uppercase">Step 2</span>
-          <h4 className="font-medium text-sm">Upload Clinical Report</h4>
-          <p className="text-xs text-mut">Submit lab or clinical documents (PDF or photo) for human confirmation.</p>
-        </Panel>
+        <Link to="/patient/upload" className="block text-left group">
+          <Panel className="flex flex-col gap-1 border-acc/40 hover:border-acc transition-colors h-full">
+            <span className="type-caption text-acc font-semibold uppercase flex items-center justify-between">
+              <span>Step 2</span>
+              <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+            </span>
+            <h4 className="font-medium text-sm text-ink">Upload Clinical Report</h4>
+            <p className="text-xs text-mut">Submit lab documents (PDF or photo) and verify extracted values with source links.</p>
+          </Panel>
+        </Link>
 
         <Panel className="flex flex-col gap-1">
           <span className="type-caption text-mut font-semibold uppercase">Step 3</span>

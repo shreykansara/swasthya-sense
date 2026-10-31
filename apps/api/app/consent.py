@@ -140,6 +140,30 @@ def check_consent(patient_id: UUID, scope: ConsentScope, channel: MessagingChann
     return False
 
 
+def enforce_consent(
+    patient_id: UUID,
+    scope: ConsentScope,
+    channel: MessagingChannel | None = None,
+    actor_id: UUID | None = None,
+) -> bool:
+    """Enforces consent and raises HTTP 403 if not active."""
+    if not check_consent(patient_id, scope, channel):
+        logger.warning(
+            f"Blocked action: patient {patient_id} lacks active consent for scope '{scope}' "
+            f"(channel={channel}). Actor: {actor_id}"
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "CONSENT_REQUIRED",
+                "message": f"Active consent for scope '{scope}' has not been granted or was revoked.",
+                "scope": scope,
+                "patient_id": str(patient_id),
+            },
+        )
+    return True
+
+
 def require_consent(scope: ConsentScope, channel: MessagingChannel | None = None) -> Callable:
     """
     FastAPI dependency factory enforcing that the target patient_id
@@ -149,21 +173,6 @@ def require_consent(scope: ConsentScope, channel: MessagingChannel | None = None
         patient_id: Annotated[UUID, Query(description="Target patient UUID")],
         current_user: Annotated[CurrentUser, Depends(get_current_user)],
     ) -> bool:
-        # Check active consent in system
-        if not check_consent(patient_id, scope, channel):
-            logger.warning(
-                f"Blocked action: patient {patient_id} lacks active consent for scope '{scope}' "
-                f"(channel={channel}). Actor: {current_user.id}"
-            )
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail={
-                    "error": "CONSENT_REQUIRED",
-                    "message": f"Active consent for scope '{scope}' has not been granted or was revoked.",
-                    "scope": scope,
-                    "patient_id": str(patient_id),
-                },
-            )
-        return True
+        return enforce_consent(patient_id, scope, channel, actor_id=current_user.id)
 
     return consent_dependency

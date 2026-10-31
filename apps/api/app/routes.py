@@ -3,9 +3,20 @@ API V1 Route Definitions
 Swasthya Sense — Cardiac Follow-Up & Early-Warning Prototype
 """
 
+from pathlib import Path
 from typing import Annotated
 from uuid import UUID
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 
 from apps.api.app.auth import CurrentUser, get_current_user, require_role
 from apps.api.app.config import settings
@@ -15,12 +26,22 @@ from apps.api.app.consent import (
     ConsentStatusResponse,
     get_patient_consent_status,
     require_consent,
+    enforce_consent,
     revoke_consent_record,
     store_consent_record,
 )
+from apps.api.app.extraction.models import (
+    ConfirmReportRequest,
+    ReportUploadRecord,
+)
+from apps.api.app.extraction.service import extraction_service
 
 api_router = APIRouter()
 
+
+# ==========================================
+# System & Health
+# ==========================================
 
 @api_router.get("/health", tags=["System"])
 def api_health():
@@ -68,7 +89,7 @@ def admin_config_probe(
 
 
 # ==========================================
-# Phase 3: Consent Management Endpoints
+# Consent Management Endpoints
 # ==========================================
 
 @api_router.post("/consent", response_model=ConsentRecord, tags=["Consent"])
@@ -76,10 +97,6 @@ def grant_consent(
     payload: ConsentGrantRequest,
     current_user: Annotated[CurrentUser, Depends(get_current_user)],
 ):
-    """
-    Grants a specific scope of consent (data_storage, report_upload, or messaging).
-    Can be executed by the patient themselves or by their assigned health worker.
-    """
     record = store_consent_record(
         patient_id=payload.patient_id,
         scope=payload.scope,
@@ -95,10 +112,6 @@ def revoke_consent(
     consent_id: UUID,
     current_user: Annotated[CurrentUser, Depends(get_current_user)],
 ):
-    """
-    Immediately revokes a specific consent record.
-    Revocation gates all future access and cancels pending message reminders.
-    """
     revoked = revoke_consent_record(consent_id)
     if not revoked:
         raise HTTPException(
@@ -113,12 +126,122 @@ def get_consent_status(
     patient_id: Annotated[UUID, Query(...)],
     current_user: Annotated[CurrentUser, Depends(get_current_user)],
 ):
-    """Returns active scopes and channels for a given patient."""
     return get_patient_consent_status(patient_id)
 
 
 # ==========================================
-# Consent-Gated Feature Test Probes
+# Phase 5: Report Intake & Extraction Endpoints
+# ==========================================
+
+ALLOWED_EXTENSIONS = {".pdf", ".jpg", ".jpeg", ".png"}
+MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB limit
+
+
+@api_router.post(
+    "/reports/upload",
+    response_model=ReportUploadRecord,
+    tags=["Reports"],
+    status_code=status.HTTP_202_ACCEPTED,
+)
+async def upload_clinical_report(
+    background_tasks: BackgroundTasks,
+    patient_id: Annotated[UUID, Form(...)],
+    file: UploadFile = File(...),
+    current_user: Annotated[CurrentUser, Depends(get_current_user)] = None,
+):
+    enforce_consent(patient_id, "report_upload", actor_id=current_user.id if current_user else None)
+    """
+    Consent-gated report intake endpoint:
+    - Enforces file type (.pdf, .jpg, .jpeg, .png) and max size (10MB).
+    - Stores file safely with randomized UUID name.
+    - Launches background extraction task.
+    - Returns HTTP 202 Accepted immediately.
+    """
+    file_bytes = await file.read()
+    if len(file_bytes) > MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail="File size exceeds maximum allowed limit of 10MB.",
+        )
+
+    ext = Path(file.filename or "").suffix.lower()
+    if ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file format '{ext}'. Allowed formats: {ALLOWED_EXTENSIONS}",
+        )
+
+    # Create upload record and save file safely
+    upload_record = extraction_service.create_upload_record(
+        patient_id=patient_id,
+        file_name=file.filename or f"report{ext}",
+        mime_type=file.content_type or "application/octet-stream",
+        file_bytes=file_bytes,
+        actor_id=current_user.id,
+    )
+
+    # Enqueue background extraction task
+    background_tasks.add_task(extraction_service.process_report_intake, upload_record.id)
+
+    return upload_record
+
+
+@api_router.get("/reports/{upload_id}", response_model=ReportUploadRecord, tags=["Reports"])
+def get_report_upload(
+    upload_id: UUID,
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
+):
+    """Polls extraction status: 'uploaded', 'extracting', 'needs_confirmation', 'confirmed'."""
+    record = extraction_service.get_upload_record(upload_id)
+    if not record:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Report upload not found",
+        )
+    return record
+
+
+@api_router.post("/reports/{upload_id}/confirm", response_model=ReportUploadRecord, tags=["Reports"])
+def confirm_report_values(
+    upload_id: UUID,
+    payload: ConfirmReportRequest,
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
+):
+    """
+    Human verification checkpoint:
+    Stores confirmed values with audit trail.
+    Downstream clinical rules and patient readouts strictly reject unconfirmed data.
+    """
+    try:
+        updated = extraction_service.confirm_extracted_values(
+            upload_id=upload_id,
+            confirmations=payload.confirmed_values,
+            confirmed_by=current_user.id,
+        )
+        return updated
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e),
+        )
+
+
+@api_router.get("/patients/{patient_id}/confirmed-values", tags=["Reports"])
+def get_confirmed_values(
+    patient_id: UUID,
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
+):
+    """Retrieves only values confirmed by a human; unconfirmed values are strictly excluded."""
+    confirmed = extraction_service.get_confirmed_values_for_patient(patient_id)
+    return {
+        "patient_id": str(patient_id),
+        "total_confirmed": len(confirmed),
+        "values": confirmed,
+    }
+
+
+# ==========================================
+# Legacy feature test probes
 # ==========================================
 
 @api_router.post("/reports/upload-probe", tags=["Reports"])
@@ -126,7 +249,6 @@ def report_upload_probe(
     patient_id: Annotated[UUID, Query(...)],
     _has_consent: Annotated[bool, Depends(require_consent("report_upload"))],
 ):
-    """Consent-gated upload route: fails with 403 if report_upload consent is inactive."""
     return {
         "status": "authorized",
         "message": "Report intake authorized by active consent.",
@@ -139,7 +261,6 @@ def message_send_probe(
     patient_id: Annotated[UUID, Query(...)],
     _has_consent: Annotated[bool, Depends(require_consent("messaging", "sms"))],
 ):
-    """Consent-gated messaging route: fails with 403 if messaging SMS consent is inactive."""
     return {
         "status": "authorized",
         "message": "Message dispatch authorized by active consent.",
