@@ -9,6 +9,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from apps.api.app.auth import CurrentUser, get_current_user
+from apps.api.app.perfusion.audit import log_perfusion_audit
 from apps.api.app.perfusion.schemas import (
     CompleteAnalysisResponse,
     PatientInputSchema,
@@ -33,6 +34,7 @@ async def predict_and_explain(
     Enforces JWT authentication and RBAC:
     - Patient can only access their own data.
     - Worker/Clinician/Supervisor/Admin can access any patient.
+    Logs an immutable audit record for every prediction request.
     """
     if current_user.role not in ALLOWED_PERFUSION_ROLES:
         raise HTTPException(
@@ -49,4 +51,19 @@ async def predict_and_explain(
             )
         patient.patient_id = str(current_user.id)
 
-    return analyze_patient(patient)
+    res = analyze_patient(patient)
+
+    # Log immutable audit entry
+    log_perfusion_audit(
+        actor_id=current_user.id,
+        action="perfusion_predict",
+        patient_id=patient.patient_id,
+        details={
+            "cad_probability": res.predictions.overall_cad.probability,
+            "cad_risk_tier": res.predictions.overall_cad.risk_tier.value,
+            "high_risk_vessels": res.predictions.high_risk_vessels,
+            "latency_ms": res.latency_ms,
+        },
+    )
+
+    return res
