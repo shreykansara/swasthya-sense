@@ -124,3 +124,4 @@ def log_access_event(
 def get_patient_access_log(patient_id: str) -> List[AccessLogEntry]:
     """Retrieves access history for the patient self-service portal."""
     return [e for e in _AUDIT_STORE if e.patient_id == patient_id]
+

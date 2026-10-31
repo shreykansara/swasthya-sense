@@ -129,3 +129,4 @@ def test_structured_check_in_vitals_validation():
     )
     assert check_in.vitals.systolic_bp == 142.0
     assert check_in.symptoms.medication_adherent is True
+

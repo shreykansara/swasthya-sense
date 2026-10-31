@@ -25,3 +25,4 @@ def test_evaluation_benchmark_metrics():
     # 3. Transparent Rule Trace Coverage (Success Measure 3)
     trace = m["transparent_rule_explainability"]
     assert trace["trace_coverage"] == 1.0, "All alerts must provide complete rule trace"
+

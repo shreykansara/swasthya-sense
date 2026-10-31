@@ -90,3 +90,4 @@ def test_clinician_override_rejects_missing_rationale():
             reason_code=OverrideReasonCode.FALSE_POSITIVE,
             clinical_rationale="Short",  # under 10 chars
         )
+

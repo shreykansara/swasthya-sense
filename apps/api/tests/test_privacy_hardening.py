@@ -85,3 +85,4 @@ def test_append_only_audit_log_rejects_modifications():
 
     with pytest.raises(ImmutableAuditException, match="Audit log is strictly append-only"):
         entry.delete()
+

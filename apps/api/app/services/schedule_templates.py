@@ -191,3 +191,4 @@ def determine_escalation_step(cohort_id: str, days_overdue: int) -> Optional[Esc
         if days_overdue >= step.days_overdue:
             active_step = step
     return active_step
+

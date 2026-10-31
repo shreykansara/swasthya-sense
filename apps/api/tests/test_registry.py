@@ -48,3 +48,4 @@ def test_model_overlapping_features_validity():
     for key in required_keys:
         assert key in sample, f"Required feature '{key}' missing from synthetic patient schema!"
         assert sample[key] is not None
+

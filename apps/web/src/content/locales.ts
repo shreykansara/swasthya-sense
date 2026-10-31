@@ -95,3 +95,4 @@ export const LOCALES: Record<SupportedLanguage, LocalizedStrings> = {
     machineTranslatedNotice: '[Machine-translated · Clinical Review Pending]',
   },
 };
+

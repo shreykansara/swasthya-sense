@@ -42,3 +42,4 @@ class CheckInEvaluationResult(BaseModel):
     alert_tier: Optional[str] = None
     reason_code: Optional[str] = None
     recommendations: List[str] = Field(default_factory=list)
+
