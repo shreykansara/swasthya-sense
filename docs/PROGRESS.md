@@ -60,4 +60,4 @@
 | 2026-10-31 | 7.6 | Built adversarial rule scanner in test_forbidden_leakage.py proving zero condition words across all rules | 1de372f |
 | 2026-10-31 | 7.7 | Built AdminRulesPage for governance inspection and sign-off, plus clinician override with mandatory audit reason | 1de372f |
 | 2026-10-31 | 7.8 | Verified with 8 new engine tests (55 backend total) and 3 frontend tests (16 frontend total) | 1de372f |
-| 2026-10-31 | R0 | Initialized branch phase-r-restore-perfusion, recorded repo health and test counts in RESTORE_LOG.md | — |
+| 2026-10-31 | R0 | Initialized branch phase-r-restore-perfusion, recorded repo health and test counts in RESTORE_LOG.md | cf28b31 |
