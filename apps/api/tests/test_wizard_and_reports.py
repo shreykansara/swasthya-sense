@@ -172,8 +172,8 @@ def template_lint(report_dict: dict, context_dict: dict, is_clinician: bool):
 
     # Allowed numbers derivation check
     allowed_numbers = _extract_all_numbers(context_dict)
-    # Allow common formatting indices (e.g. 1..10, 100 for percent denominator)
-    allowed_numbers.update({float(i) for i in range(15)})
+    # Allow common formatting indices and calendar day/month numbers (0..31, 100 for percent)
+    allowed_numbers.update({float(i) for i in range(32)})
     allowed_numbers.update({100.0, 1.0, 0.0})
 
     # Find all numbers in the rendered report
