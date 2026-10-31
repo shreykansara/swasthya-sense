@@ -61,3 +61,4 @@
 | 2026-10-31 | 7.7 | Built AdminRulesPage for governance inspection and sign-off, plus clinician override with mandatory audit reason | 1de372f |
 | 2026-10-31 | 7.8 | Verified with 8 new engine tests (55 backend total) and 3 frontend tests (16 frontend total) | 1de372f |
 | 2026-10-31 | R0 | Initialized branch phase-r-restore-perfusion, recorded repo health and test counts in RESTORE_LOG.md | cf28b31 |
+| 2026-10-31 | R1 | Mapped all Perfusion3D source assets, models, GLB, stores, and pins in PERFUSION_SOURCE_MAP.md | — |
