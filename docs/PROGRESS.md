@@ -64,4 +64,16 @@
 | 2026-10-31 | R1 | Mapped all Perfusion3D source assets, models, GLB, stores, and pins in PERFUSION_SOURCE_MAP.md | e258543 |
 | 2026-10-31 | R2 | Copied all raw assets (GLB, models, data, training scripts, test_leakage, presets) with matching SHA256 hashes | 8b3ecb2 |
 | 2026-10-31 | R3.1 | Add perfusion python requirements | bb1511c |
+| 2026-10-31 | R3.2 | Copy and adapt inference service | f5fac10 |
+| 2026-10-31 | R3.3 | Copy patient input and prediction schemas | e857f67 |
+| 2026-10-31 | R3.4 | Document perfusion inputs | 071570c |
+| 2026-10-31 | R3.5 | Wire model and explainer loading into lifespan | fa844b1 |
+| 2026-10-31 | R3.6 | Add predict endpoint | 0fd40d4 |
+| 2026-10-31 | R3.7 | Add auth guard to predict endpoint | d92745e |
+| 2026-10-31 | R3.8 | Audit predict requests | c349d55 |
+| 2026-10-31 | R3.9 | Verify predict parity on clinical presets | 0f4613c |
+| 2026-10-31 | R3.10 | Record model evaluation and cross-validation verification | 7da7705 |
+| 2026-10-31 | R3.11 | Add treeshap latency tests | b1cdbff |
+| 2026-10-31 | R3.12 | Adapt leakage test, tag restore-R3-complete | 3aeeff8 |
+
 
