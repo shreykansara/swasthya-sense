@@ -4,6 +4,7 @@ Swasthya Sense — Cardiac Follow-Up & Early-Warning Prototype
 """
 
 from contextlib import asynccontextmanager
+import time
 from typing import AsyncGenerator
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,12 +14,25 @@ from fastapi.staticfiles import StaticFiles
 from apps.api.app.config import settings
 from apps.api.app.routes import api_router
 from apps.api.app.utils.logger import logger
+from apps.api.app.perfusion.service import model_service
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Lifespan context manager for startup and shutdown hooks."""
     logger.info("Initializing Swasthya Sense API services...")
+    start_t = time.perf_counter()
+    model_service.load_artifacts()
+    load_time_ms = round((time.perf_counter() - start_t) * 1000.0, 2)
+    app.state.perfusion = {
+        "model_service": model_service,
+        "load_time_ms": load_time_ms,
+        "targets": ["CAD", "LAD", "LCX", "RCA"],
+        "is_ready": model_service.is_ready,
+    }
+    logger.info(
+        f'{{"event": "perfusion_models_loaded", "load_time_ms": {load_time_ms}, "status": "ready"}}'
+    )
     yield
     logger.info("Shutting down Swasthya Sense API services...")
 
