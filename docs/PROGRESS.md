@@ -28,11 +28,19 @@
 | 2026-10-31 | 3.5 | Built Patient Consent UI with per-scope toggles, instant revocation, and append-only audit history | 6e55cee |
 | 2026-10-31 | 3.6 | Verified instant revocation behavior blocking downstream endpoints in test_consent.py | 6e55cee |
 | 2026-10-31 | 3.7 | Verified 'No consent: stop, nothing stored' path with zero data created | 6e55cee |
-| 2026-10-31 | 4.1 | Defined clinical value dictionary in synthetic/value_catalog.yaml with ranges and cohort bindings | — |
-| 2026-10-31 | 4.2 | Built synthetic/generate.py producing 120 patients across Cohorts A, B, C with masked phone numbers | — |
-| 2026-10-31 | 4.3 | Generated 1067 longitudinal visits with trajectory drift, sudden jump, and missed visits; stored ground truth | — |
-| 2026-10-31 | 4.4 | Created idempotent SQL seed loader in synthetic/seed_synthetic.sql; count tests verified | — |
-| 2026-10-31 | 4.5 | Generated 3 clean clinical lab-style PDF reports using ReportLab | — |
-| 2026-10-31 | 4.6 | Generated degraded variants: scanned PDFs and camera photo JPGs (3 templates x 3 styles = 9 files) | — |
-| 2026-10-31 | 4.7 | Output synthetic/reports/manifest.json mapping each file to its exact true values (OCR benchmark key) | — |
-| 2026-10-31 | 4.8 | Tested python -m synthetic.generate --all and updated README; 34 pytest tests passing | — |
+| 2026-10-31 | 4.1 | Defined clinical value dictionary in synthetic/value_catalog.yaml with ranges and cohort bindings | 56d9669 |
+| 2026-10-31 | 4.2 | Built synthetic/generate.py producing 120 patients across Cohorts A, B, C with masked phone numbers | 56d9669 |
+| 2026-10-31 | 4.3 | Generated 1067 longitudinal visits with trajectory drift, sudden jump, and missed visits; stored ground truth | 56d9669 |
+| 2026-10-31 | 4.4 | Created idempotent SQL seed loader in synthetic/seed_synthetic.sql; count tests verified | 56d9669 |
+| 2026-10-31 | 4.5 | Generated 3 clean clinical lab-style PDF reports using ReportLab | 56d9669 |
+| 2026-10-31 | 4.6 | Generated degraded variants: scanned PDFs and camera photo JPGs (3 templates x 3 styles = 9 files) | 56d9669 |
+| 2026-10-31 | 4.7 | Output synthetic/reports/manifest.json mapping each file to its exact true values (OCR benchmark key) | 56d9669 |
+| 2026-10-31 | 4.8 | Tested python -m synthetic.generate --all and updated README; 34 pytest tests passing | 56d9669 |
+| 2026-10-31 | 5.1 | Created report_uploads and extracted_values migration with consent foreign key and status enums | — |
+| 2026-10-31 | 5.2 | Built digital PDF extractor via pdfplumber with word-boundary catalog matching | — |
+| 2026-10-31 | 5.3 | Built OCR extractor via PyMuPDF rendering + OpenCV preprocessing (grayscale, deskew, denoise, Otsu) + Tesseract | — |
+| 2026-10-31 | 5.4 | Built clinical parser validating extracted numbers against plausible ranges with confidence scoring | — |
+| 2026-10-31 | 5.5 | Built POST /reports/upload, GET /reports/{id}, POST /reports/{id}/confirm, GET /patients/{id}/confirmed-values | — |
+| 2026-10-31 | 5.6 | Ran scripts/eval_ocr.py against all 9 synthetic documents; documented results in docs/OCR_EVAL.md (Clean 100%, Scanned 100%) | — |
+| 2026-10-31 | 5.7 | Built mobile-first ReportIntakePage with document preview, cell highlighting, editable values checklist | — |
+| 2026-10-31 | 5.8 | Verified downstream endpoints only consume confirmed values; 36 backend tests and 10 frontend tests passing | — |

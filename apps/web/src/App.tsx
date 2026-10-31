@@ -4,6 +4,7 @@ import { useAuthStore, ROLE_HOME_PATHS } from './store/useAuthStore';
 import { LoginPage } from './pages/LoginPage';
 import { PatientHomePage } from './pages/PatientHomePage';
 import { ConsentManagementPage } from './pages/ConsentManagementPage';
+import { ReportIntakePage } from './pages/ReportIntakePage';
 import { HealthWorkerHomePage } from './pages/HealthWorkerHomePage';
 import { ClinicianHomePage } from './pages/ClinicianHomePage';
 import { SupervisorHomePage } from './pages/SupervisorHomePage';
@@ -24,7 +25,7 @@ export const App: React.FC = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
 
-        {/* Role-gated protected routes */}
+        {/* Patient Routes */}
         <Route
           path="/patient"
           element={
@@ -42,6 +43,16 @@ export const App: React.FC = () => {
           }
         />
         <Route
+          path="/patient/upload"
+          element={
+            <ProtectedRoute allowedRoles={['patient']}>
+              <ReportIntakePage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Health Worker Routes */}
+        <Route
           path="/worker"
           element={
             <ProtectedRoute allowedRoles={['health_worker']}>
@@ -50,6 +61,16 @@ export const App: React.FC = () => {
           }
         />
         <Route
+          path="/worker/intake"
+          element={
+            <ProtectedRoute allowedRoles={['health_worker']}>
+              <ReportIntakePage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Clinician Routes */}
+        <Route
           path="/clinician"
           element={
             <ProtectedRoute allowedRoles={['clinician']}>
@@ -57,6 +78,8 @@ export const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* Supervisor Routes */}
         <Route
           path="/supervisor"
           element={
@@ -65,6 +88,8 @@ export const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* Admin Routes */}
         <Route
           path="/admin"
           element={
