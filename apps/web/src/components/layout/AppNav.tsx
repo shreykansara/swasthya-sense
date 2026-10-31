@@ -1,192 +1,159 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { Sun, Moon } from 'lucide-react';
-import { WIZARD_STEPS } from '../../types/wizard';
+import { Sun, Moon, Users, FileText, Stethoscope, ShieldCheck, Heart } from 'lucide-react';
 import { useWizardStore } from '../../store/useWizardStore';
 import { usePatientStore } from '../../store/usePatientStore';
 import type { AppRole } from '../../types/clinical';
 import { useTheme } from '../../hooks/useTheme';
 import { Trace } from '../ui/Trace';
-import { PrimaryButton } from '../ui/PrimaryButton';
-import { SecondaryButton } from '../ui/SecondaryButton';
-import { QuietButton } from '../ui/QuietButton';
 
 export interface AppNavProps {
-  // Optional override for design system preview
   forceStep?: number;
   forceState?: 'completed' | 'current' | 'upcoming' | 'hover' | 'focus';
 }
 
-export const AppNav: React.FC<AppNavProps> = ({ forceStep, forceState }) => {
+export const AppNav: React.FC<AppNavProps> = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { resolvedTheme, setTheme } = useTheme();
-  const reset = useWizardStore((s) => s.reset);
-  const isStepUnlocked = useWizardStore((s) => s.isStepUnlocked);
   const activeRole = usePatientStore((s) => s.activeRole);
   const setActiveRole = usePatientStore((s) => s.setActiveRole);
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const prevStepRef = useRef<number | null>(null);
+  const navLinks = [
+    { label: 'Worklist & Triage', path: '/', icon: Users },
+    { label: 'Lab Intake', path: '/lab-intake', icon: FileText },
+    { label: "Doctor's 3D Station", path: '/doctor-consultation', icon: Stethoscope },
+    { label: 'Audit & Governance', path: '/audit', icon: ShieldCheck },
+    { label: 'Assessment Stepper', path: '/welcome', icon: Heart },
+  ];
 
-  const [animatingSteps, setAnimatingSteps] = useState<{
-    completedStep: number;
-    currentStep: number;
-  } | null>(null);
-
-  // Determine current step
-  const currentStepDef = WIZARD_STEPS.find((s) => s.path === location.pathname);
-  const currentStepNumber = forceStep !== undefined
-    ? forceStep
-    : currentStepDef ? currentStepDef.step : 0;
-  const isWizardStep = Boolean(currentStepDef) || forceStep !== undefined;
-
-  // Step bar forward animation logic (Task 2.3)
-  useEffect(() => {
-    if (prevStepRef.current !== null && currentStepNumber > prevStepRef.current) {
-      setAnimatingSteps({
-        completedStep: prevStepRef.current,
-        currentStep: currentStepNumber,
-      });
-
-      const timer = setTimeout(() => {
-        setAnimatingSteps(null);
-      }, 700);
-
-      return () => clearTimeout(timer);
+  const handleRoleChange = (role: AppRole) => {
+    setActiveRole(role);
+    // Contextual redirection based on chosen role if at root
+    if (role === 'worker' && location.pathname === '/') {
+      navigate('/lab-intake');
+    } else if (role === 'clinician' && location.pathname === '/') {
+      navigate('/doctor-consultation');
     }
-    prevStepRef.current = currentStepNumber;
-  }, [currentStepNumber]);
-
-  const handleStepClick = (stepNumber: number, path: string) => {
-    if (stepNumber === 1 || stepNumber < currentStepNumber || isStepUnlocked(stepNumber)) {
-      navigate(path);
-    }
-  };
-
-  const handleConfirmNewAssessment = () => {
-    dialogRef.current?.close();
-    navigate('/welcome', { replace: true });
-    reset();
   };
 
   return (
-    <header className="app-chrome app-header">
-      {/* Task 2.1 Visually-hidden Skip link, visible on focus */}
+    <header className="app-chrome app-header" style={{ borderBottom: '1px solid var(--bd)', backgroundColor: 'var(--panel)' }}>
       <a href="#main-content" className="skip-link app-chrome no-print">
         Skip to content
       </a>
 
-      <div className="app-header-inner">
-        {/* Task 2.2 LEFT zone */}
+      <div
+        className="app-header-inner"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '0 16px',
+          height: '56px',
+          maxWidth: '1440px',
+          margin: '0 auto',
+        }}
+      >
+        {/* Brand Left Zone */}
         <Link
           to="/"
           style={{
-            justifySelf: 'start',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '8px',
             textDecoration: 'none',
             color: 'inherit',
           }}
-          aria-label="Perfusion3D Home"
+          aria-label="Swasthya Sense Home"
         >
-          <Trace width={36} height={16} className="trace-initial" />
-          <span
-            style={{
-              fontFamily: 'var(--fs)',
-              fontSize: '15px',
-              fontWeight: 600,
-              color: 'var(--ink)',
-            }}
-          >
-            Perfusion3D
-          </span>
+          <Trace width={30} height={14} className="trace-initial" />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span
+              style={{
+                fontFamily: 'var(--fs)',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--ink)',
+                lineHeight: 1.1,
+              }}
+            >
+              Swasthya Sense
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--fm)',
+                fontSize: '9px',
+                color: 'var(--mut)',
+                letterSpacing: '0.4px',
+              }}
+            >
+              PERFUSION3D TWIN
+            </span>
+          </div>
         </Link>
 
-        {/* Task 2.3 CENTER zone (>=900px) */}
-        <nav aria-label="Progress" className="nav-center-zone">
-          <ol
-            style={{
-              display: 'flex',
-              gap: '2px',
-              listStyle: 'none',
-              margin: 0,
-              padding: 0,
-              height: '100%',
-              alignItems: 'center',
-            }}
-          >
-            {WIZARD_STEPS.map((s) => {
-              const isCompleted = currentStepNumber > s.step;
-              const isCurrent = currentStepNumber === s.step;
-              const isUpcoming = currentStepNumber < s.step;
-
-              // Animation class on forward transition
-              let barAnimClass = '';
-              if (animatingSteps) {
-                if (s.step === animatingSteps.completedStep) {
-                  barAnimClass = 'bar-grow';
-                } else if (s.step === animatingSteps.currentStep) {
-                  barAnimClass = 'bar-grow-delayed';
-                }
-              }
-
-              let stateClass = 'upcoming';
-              if (isCurrent) stateClass = 'current';
-              else if (isCompleted) stateClass = 'completed';
-
-              if (forceState) {
-                stateClass = forceState;
-              }
-
-              return (
-                <li key={s.step} style={{ height: '100%', display: 'flex' }}>
-                  <button
-                    type="button"
-                    className={`nav-step-item-btn ${stateClass} ${barAnimClass}`}
-                    onClick={() => handleStepClick(s.step, s.path)}
-                    disabled={isCurrent || (isUpcoming && s.step !== 1 && !isStepUnlocked(s.step))}
-                    aria-current={isCurrent ? 'step' : undefined}
-                    aria-disabled={isUpcoming && s.step !== 1 && !isStepUnlocked(s.step) ? 'true' : undefined}
-                    tabIndex={isUpcoming && s.step !== 1 && !isStepUnlocked(s.step) ? -1 : 0}
-                  >
-                    <span className="nav-step-num">{s.step}</span>
-                    <span>{s.label}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
+        {/* Center Navigation Links */}
+        <nav aria-label="Clinical Workspaces" style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+          {navLinks.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = location.pathname === tab.path;
+            return (
+              <Link
+                key={tab.path}
+                to={tab.path}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 10px',
+                  borderRadius: 'var(--radius)',
+                  fontSize: '12px',
+                  fontFamily: 'var(--fs)',
+                  fontWeight: isActive ? 600 : 400,
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? 'var(--hov)' : 'transparent',
+                  color: isActive ? 'var(--acc)' : 'var(--ink)',
+                  border: `1px solid ${isActive ? 'var(--acc)' : 'transparent'}`,
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <Icon size={14} />
+                <span>{tab.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
-        {/* Task 2.4 RIGHT zone */}
-        <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <select
-            value={activeRole}
-            onChange={(e) => setActiveRole(e.target.value as AppRole)}
-            aria-label="Active Clinical Role"
-            className="app-chrome"
-            style={{
-              height: '32px',
-              padding: '0 8px',
-              backgroundColor: 'var(--panel)',
-              border: '1px solid var(--bds)',
-              borderRadius: 'var(--radius)',
-              color: 'var(--ink)',
-              fontFamily: 'var(--fs)',
-              fontSize: '11px',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            <option value="clinician">Clinician (3D Twin)</option>
-            <option value="worker">Health Worker</option>
-            <option value="supervisor">Supervisor</option>
-            <option value="patient">Patient</option>
-            <option value="admin">Admin</option>
-          </select>
-          {/* a) Theme toggle button */}
+        {/* Right Zone: User Persona Switcher & Theme Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ fontSize: '11px', color: 'var(--mut)', fontFamily: 'var(--fs)' }}>Sign-in Role:</span>
+            <select
+              value={activeRole}
+              onChange={(e) => handleRoleChange(e.target.value as AppRole)}
+              aria-label="Active Medical Persona"
+              style={{
+                height: '32px',
+                padding: '0 8px',
+                backgroundColor: 'var(--panel)',
+                border: '1px solid var(--bds)',
+                borderRadius: 'var(--radius)',
+                color: 'var(--ink)',
+                fontFamily: 'var(--fs)',
+                fontSize: '11px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              <option value="worker">🧪 Rajesh Kumar (Lab Tech)</option>
+              <option value="clinician">🩺 Dr. Aditi Sharma (Cardiologist)</option>
+              <option value="supervisor">📋 Sunita Devi (ASHA Worker)</option>
+              <option value="admin">🛡️ Vikram Malhotra (Audit)</option>
+            </select>
+          </div>
+
+          {/* Theme toggle */}
           <button
             type="button"
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
@@ -204,68 +171,12 @@ export const AppNav: React.FC<AppNavProps> = ({ forceStep, forceState }) => {
               borderRadius: 'var(--radius)',
               color: 'var(--ink)',
               cursor: 'pointer',
-              transition: 'background-color 140ms ease, border-color 140ms ease, transform 140ms ease',
             }}
           >
-            {resolvedTheme === 'dark' ? (
-              <Sun size={15} />
-            ) : (
-              <Moon size={15} />
-            )}
+            {resolvedTheme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
           </button>
-
-          {/* b) New assessment text button (shown only on steps 2-4 and >=900px) */}
-          {isWizardStep && currentStepNumber >= 2 && currentStepNumber <= 4 && (
-            <QuietButton
-              size="sm"
-              className="nav-new-assessment-btn"
-              onClick={() => dialogRef.current?.showModal()}
-            >
-              New assessment
-            </QuietButton>
-          )}
         </div>
       </div>
-
-      {/* Confirmation Dialog for New Assessment */}
-      <dialog ref={dialogRef} className="nav-confirm-dialog app-chrome no-print">
-        <h3
-          style={{
-            fontFamily: 'var(--fs)',
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--ink)',
-            margin: '0 0 8px 0',
-          }}
-        >
-          Start a new assessment?
-        </h3>
-        <p
-          style={{
-            fontFamily: 'var(--fs)',
-            fontSize: '13px',
-            color: 'var(--mut)',
-            margin: '0 0 20px 0',
-            lineHeight: 1.45,
-          }}
-        >
-          This clears all entered values and results from this session.
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-          <SecondaryButton
-            size="sm"
-            onClick={() => dialogRef.current?.close()}
-          >
-            Cancel
-          </SecondaryButton>
-          <PrimaryButton
-            size="sm"
-            onClick={handleConfirmNewAssessment}
-          >
-            Clear and start over
-          </PrimaryButton>
-        </div>
-      </dialog>
     </header>
   );
 };

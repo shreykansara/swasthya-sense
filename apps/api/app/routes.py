@@ -18,9 +18,11 @@ from apps.api.app.schemas import (
 )
 from apps.api.app.services import explain_patient, model_service, predict_patient
 from apps.api.app.extraction.endpoint import router as extraction_router
+from apps.api.app.routes_swasthya import swasthya_router
 
 api_router = APIRouter()
 api_router.include_router(extraction_router)
+api_router.include_router(swasthya_router)
 
 
 @api_router.get(
