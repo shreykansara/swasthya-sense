@@ -8,6 +8,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Literal
+from uuid import UUID
 import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -85,6 +86,24 @@ class CompleteAnalysisResponse(BaseModel):
     explanations: dict[str, VesselExplanation] = Field(..., description="TreeSHAP explanations for each target head")
     latency_ms: float = Field(..., description="End-to-end inference latency in milliseconds")
     disclaimer: str = Field(...)
+
+
+class PatientPerfusionResponse(CompleteAnalysisResponse):
+    """Perfusion analysis response enriched with database input_id."""
+    input_id: UUID = Field(..., description="Persistent database identifier for the perfusion inputs record")
+
+
+class LatestPerfusionResponse(BaseModel):
+    """Latest recorded perfusion assessment for a patient."""
+    patient_id: UUID
+    input_id: UUID | None = None
+    inputs: dict[str, Any] | None = None
+    source: str | None = None
+    created_at: str | None = None
+    predictions: PredictionResponse | None = None
+    explanations: dict[str, VesselExplanation] | None = None
+    model_version: str | None = None
+
 
 
 class PatientInputSchema(BaseModel):
