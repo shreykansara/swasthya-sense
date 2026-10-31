@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 
 from apps.api.app.config import settings
 from apps.api.app.routes import api_router
+from apps.api.app.perfusion.routes import router as perfusion_router
 from apps.api.app.utils.logger import logger
 from apps.api.app.perfusion.service import model_service
 
@@ -77,8 +78,10 @@ def root_health():
     }
 
 
-# Mount API V1 Router
+# Mount API V1 Router and Perfusion Router
 app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(perfusion_router)
+app.include_router(perfusion_router, prefix=settings.API_V1_STR)
 
 # Mount production Web UI if build distribution exists
 if settings.WEB_DIST_DIR.exists():
@@ -94,6 +97,7 @@ if settings.WEB_DIST_DIR.exists():
             or full_path.startswith("docs")
             or full_path.startswith("redoc")
             or full_path.startswith("health")
+            or full_path.startswith("perfusion")
         ):
             return JSONResponse(status_code=404, content={"detail": "Not Found"})
         file_path = settings.WEB_DIST_DIR / full_path
