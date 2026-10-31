@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
@@ -36,7 +35,6 @@ describe('ProtectedRoute Route Guard Integration', () => {
   });
 
   it('redirects wrong-role users to their respective home route', () => {
-    // Sign in as patient
     useAuthStore.getState().signInDemoRole('patient');
 
     render(
@@ -55,13 +53,11 @@ describe('ProtectedRoute Route Guard Integration', () => {
       </MemoryRouter>
     );
 
-    // Patient trying to access /clinician redirects to /patient
     expect(screen.getByText('Patient Home Content')).toBeTruthy();
     expect(screen.queryByText('Clinician Queue Content')).toBeNull();
   });
 
   it('allows authorized role user to view their protected route', () => {
-    // Sign in as clinician
     useAuthStore.getState().signInDemoRole('clinician');
 
     render(

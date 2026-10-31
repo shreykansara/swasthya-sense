@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore, ROLE_HOME_PATHS } from './store/useAuthStore';
 import { LoginPage } from './pages/LoginPage';
 import { PatientHomePage } from './pages/PatientHomePage';
+import { ConsentManagementPage } from './pages/ConsentManagementPage';
 import { HealthWorkerHomePage } from './pages/HealthWorkerHomePage';
 import { ClinicianHomePage } from './pages/ClinicianHomePage';
 import { SupervisorHomePage } from './pages/SupervisorHomePage';
@@ -29,6 +30,14 @@ export const App: React.FC = () => {
           element={
             <ProtectedRoute allowedRoles={['patient']}>
               <PatientHomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/patient/consent"
+          element={
+            <ProtectedRoute allowedRoles={['patient']}>
+              <ConsentManagementPage />
             </ProtectedRoute>
           }
         />

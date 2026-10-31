@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { AppLayout } from '../components/layout/AppLayout';
 import { Panel } from '../components/ui';
 import { useAuthStore } from '../store/useAuthStore';
@@ -19,11 +20,16 @@ export const PatientHomePage: React.FC = () => {
       </Panel>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Panel className="flex flex-col gap-1 border-acc/30">
-          <span className="type-caption text-acc font-semibold uppercase">Step 1</span>
-          <h4 className="font-medium text-sm">Consent Preferences</h4>
-          <p className="text-xs text-mut">Manage report storage, upload consent, and communication channels.</p>
-        </Panel>
+        <Link to="/patient/consent" className="block text-left group">
+          <Panel className="flex flex-col gap-1 border-acc/40 hover:border-acc transition-colors h-full">
+            <span className="type-caption text-acc font-semibold uppercase flex items-center justify-between">
+              <span>Step 1</span>
+              <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+            </span>
+            <h4 className="font-medium text-sm text-ink">Consent Preferences</h4>
+            <p className="text-xs text-mut">Manage report storage, upload consent, and communication channels.</p>
+          </Panel>
+        </Link>
 
         <Panel className="flex flex-col gap-1">
           <span className="type-caption text-mut font-semibold uppercase">Step 2</span>
