@@ -36,11 +36,19 @@
 | 2026-10-31 | 4.6 | Generated degraded variants: scanned PDFs and camera photo JPGs (3 templates x 3 styles = 9 files) | 56d9669 |
 | 2026-10-31 | 4.7 | Output synthetic/reports/manifest.json mapping each file to its exact true values (OCR benchmark key) | 56d9669 |
 | 2026-10-31 | 4.8 | Tested python -m synthetic.generate --all and updated README; 34 pytest tests passing | 56d9669 |
-| 2026-10-31 | 5.1 | Created report_uploads and extracted_values migration with consent foreign key and status enums | — |
-| 2026-10-31 | 5.2 | Built digital PDF extractor via pdfplumber with word-boundary catalog matching | — |
-| 2026-10-31 | 5.3 | Built OCR extractor via PyMuPDF rendering + OpenCV preprocessing (grayscale, deskew, denoise, Otsu) + Tesseract | — |
-| 2026-10-31 | 5.4 | Built clinical parser validating extracted numbers against plausible ranges with confidence scoring | — |
-| 2026-10-31 | 5.5 | Built POST /reports/upload, GET /reports/{id}, POST /reports/{id}/confirm, GET /patients/{id}/confirmed-values | — |
-| 2026-10-31 | 5.6 | Ran scripts/eval_ocr.py against all 9 synthetic documents; documented results in docs/OCR_EVAL.md (Clean 100%, Scanned 100%) | — |
-| 2026-10-31 | 5.7 | Built mobile-first ReportIntakePage with document preview, cell highlighting, editable values checklist | — |
-| 2026-10-31 | 5.8 | Verified downstream endpoints only consume confirmed values; 36 backend tests and 10 frontend tests passing | — |
+| 2026-10-31 | 5.1 | Created report_uploads and extracted_values migration with consent foreign key and status enums | 18c90bb |
+| 2026-10-31 | 5.2 | Built digital PDF extractor via pdfplumber with word-boundary catalog matching | 18c90bb |
+| 2026-10-31 | 5.3 | Built OCR extractor via PyMuPDF rendering + OpenCV preprocessing (grayscale, deskew, denoise, Otsu) + Tesseract | 18c90bb |
+| 2026-10-31 | 5.4 | Built clinical parser validating extracted numbers against plausible ranges with confidence scoring | 18c90bb |
+| 2026-10-31 | 5.5 | Built POST /reports/upload, GET /reports/{id}, POST /reports/{id}/confirm, GET /patients/{id}/confirmed-values | 18c90bb |
+| 2026-10-31 | 5.6 | Ran scripts/eval_ocr.py against all 9 synthetic documents; documented results in docs/OCR_EVAL.md (Clean 100%, Scanned 100%) | 18c90bb |
+| 2026-10-31 | 5.7 | Built mobile-first ReportIntakePage with document preview, cell highlighting, editable values checklist | 18c90bb |
+| 2026-10-31 | 5.8 | Verified downstream endpoints only consume confirmed values; 36 backend tests and 10 frontend tests passing | 18c90bb |
+| 2026-10-31 | 6.1 | Implemented Groq client with settings integration and graceful fallback when unconfigured or offline | — |
+| 2026-10-31 | 6.2 | Created guards/forbidden_terms.yaml with English and Hindi diagnostic/condition terms denylist | — |
+| 2026-10-31 | 6.3 | Built Class-6 deterministic template generator stating only tested values and reference range status | — |
+| 2026-10-31 | 6.4 | Implemented LLM privacy filter ensuring zero PII crosses the boundary | — |
+| 2026-10-31 | 6.5 | Built prompt-constrained Groq LLM caller enforcing never-diagnose rule and bilingual output | — |
+| 2026-10-31 | 6.6 | Implemented adversarial output verification guards: forbidden terms scanner & number preservation | — |
+| 2026-10-31 | 6.7 | Built PlainReadoutCard with English/Hindi switcher and Web SpeechSynthesis Read Aloud button | — |
+| 2026-10-31 | 6.8 | Added 9 backend unit & adversarial tests and 3 frontend tests; 45 backend and 13 frontend tests passing | — |

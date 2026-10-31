@@ -35,6 +35,12 @@ from apps.api.app.extraction.models import (
     ReportUploadRecord,
 )
 from apps.api.app.extraction.service import extraction_service
+from apps.api.app.readout.models import (
+    AnalyteReadoutItem,
+    ReadoutRequest,
+    ReadoutResponse,
+)
+from apps.api.app.readout.groq_client import generate_readout
 
 api_router = APIRouter()
 
@@ -266,3 +272,51 @@ def message_send_probe(
         "message": "Message dispatch authorized by active consent.",
         "patient_id": str(patient_id),
     }
+
+
+# ==========================================
+# Phase 6: Plain-Language Readout Endpoints
+# ==========================================
+
+@api_router.post(
+    "/readout/generate",
+    response_model=ReadoutResponse,
+    tags=["Readout"],
+)
+def generate_plain_language_readout(
+    req: ReadoutRequest,
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
+):
+    enforce_consent(req.patient_id, "data_storage", actor_id=current_user.id)
+
+    items = list(req.items)
+    # If report_upload_id is provided and items list is empty, fetch confirmed values
+    if req.report_upload_id and not items:
+        upload = extraction_service.get_upload_record(req.report_upload_id)
+        if not upload:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Report upload '{req.report_upload_id}' not found.",
+            )
+        for ev in upload.extracted_values:
+            if ev.is_confirmed:
+                items.append(
+                    AnalyteReadoutItem(
+                        analyte_key=ev.analyte_key,
+                        display_name=ev.display_name,
+                        value=ev.value,
+                        unit=ev.unit,
+                        reference_low=ev.reference_low,
+                        reference_high=ev.reference_high,
+                    )
+                )
+
+    readout_text, source = generate_readout(items, language=req.language)
+
+    return ReadoutResponse(
+        patient_id=req.patient_id,
+        language=req.language,
+        source=source,
+        readout_text=readout_text,
+        items=items,
+    )
