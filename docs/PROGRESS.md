@@ -63,3 +63,5 @@
 | 2026-10-31 | R0 | Initialized branch phase-r-restore-perfusion, recorded repo health and test counts in RESTORE_LOG.md | cf28b31 |
 | 2026-10-31 | R1 | Mapped all Perfusion3D source assets, models, GLB, stores, and pins in PERFUSION_SOURCE_MAP.md | e258543 |
 | 2026-10-31 | R2 | Copied all raw assets (GLB, models, data, training scripts, test_leakage, presets) with matching SHA256 hashes | 8b3ecb2 |
+| 2026-10-31 | R3.1 | Add perfusion python requirements | bb1511c |
+
