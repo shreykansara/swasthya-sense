@@ -71,3 +71,11 @@ acf1f80e47e5d35eb2b96d66ccdf6c4214711ff2	refs/tags/phase-07-complete
 ## R0.4 Initial Test Pass Counts
 * **Backend Pytest (`apps/api/tests`):** 55 passed (2 warnings) in 27.11s
 * **Frontend Vitest (`apps/web`):** 16 passed across 4 test suites in 2.56s
+
+
+## R2.2 Copy Heart GLB
+* **Source:** `C:\Users\Shrey\Projects\Multimodal AI Hackathon\apps\web\public\models\heart_coronary_optimized.glb`
+* **Destination:** `apps\web\public\models\heart_coronary_optimized.glb`
+* **Source SHA256:** `22E5BAA75983BB7149CCD1E6AF0BD189E8C131D4CD63AD9091A8180BC0F7C58A`
+* **Destination SHA256:** `22E5BAA75983BB7149CCD1E6AF0BD189E8C131D4CD63AD9091A8180BC0F7C58A`
+* **Match:** Verified identical.
