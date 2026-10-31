@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useAuthStore, DEMO_USERS } from '../store/useAuthStore';
+import { useAuthStore } from '../store/useAuthStore';
 
 describe('useAuthStore & RBAC logic', () => {
   beforeEach(() => {
