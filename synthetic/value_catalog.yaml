@@ -1,0 +1,147 @@
+# Clinical Value Catalog — Synthetic Laboratory Reference Dictionary
+# All reference ranges, plausible bounds, and cohort relevances are synthetic and educational.
+
+catalogs:
+  - id: systolic_bp
+    name: Systolic Blood Pressure
+    aliases: ["SBP", "Systolic BP", "Blood Pressure (Systolic)"]
+    unit: mmHg
+    reference_range:
+      low: 90.0
+      high: 120.0
+    plausible_range:
+      min: 70.0
+      max: 240.0
+    cohorts: ["hypertension_lipids", "post_event_discharge", "heart_failure"]
+
+  - id: diastolic_bp
+    name: Diastolic Blood Pressure
+    aliases: ["DBP", "Diastolic BP", "Blood Pressure (Diastolic)"]
+    unit: mmHg
+    reference_range:
+      low: 60.0
+      high: 80.0
+    plausible_range:
+      min: 40.0
+      max: 140.0
+    cohorts: ["hypertension_lipids", "post_event_discharge", "heart_failure"]
+
+  - id: ldl_cholesterol
+    name: LDL Cholesterol
+    aliases: ["LDL", "LDL-C", "Low Density Lipoprotein"]
+    unit: mg/dL
+    reference_range:
+      low: 0.0
+      high: 100.0
+    plausible_range:
+      min: 20.0
+      max: 350.0
+    cohorts: ["hypertension_lipids", "post_event_discharge"]
+
+  - id: hdl_cholesterol
+    name: HDL Cholesterol
+    aliases: ["HDL", "HDL-C", "High Density Lipoprotein"]
+    unit: mg/dL
+    reference_range:
+      low: 40.0
+      high: 60.0
+    plausible_range:
+      min: 15.0
+      max: 120.0
+    cohorts: ["hypertension_lipids", "post_event_discharge"]
+
+  - id: total_cholesterol
+    name: Total Cholesterol
+    aliases: ["Cholesterol", "Total Chol", "Serum Cholesterol"]
+    unit: mg/dL
+    reference_range:
+      low: 125.0
+      high: 200.0
+    plausible_range:
+      min: 70.0
+      max: 450.0
+    cohorts: ["hypertension_lipids", "post_event_discharge"]
+
+  - id: triglycerides
+    name: Triglycerides
+    aliases: ["TG", "TRIG", "Serum Triglycerides"]
+    unit: mg/dL
+    reference_range:
+      low: 0.0
+      high: 150.0
+    plausible_range:
+      min: 30.0
+      max: 800.0
+    cohorts: ["hypertension_lipids", "post_event_discharge"]
+
+  - id: body_weight
+    name: Body Weight
+    aliases: ["Weight", "Wt", "Body Mass"]
+    unit: kg
+    reference_range:
+      low: 50.0
+      high: 75.0
+    plausible_range:
+      min: 35.0
+      max: 180.0
+    cohorts: ["heart_failure", "hypertension_lipids", "post_event_discharge"]
+
+  - id: serum_creatinine
+    name: Serum Creatinine
+    aliases: ["Creatinine", "Cr", "S. Creatinine"]
+    unit: mg/dL
+    reference_range:
+      low: 0.7
+      high: 1.3
+    plausible_range:
+      min: 0.3
+      max: 12.0
+    cohorts: ["hypertension_lipids", "post_event_discharge", "heart_failure"]
+
+  - id: potassium
+    name: Potassium
+    aliases: ["K+", "Serum Potassium", "Potassium (K)"]
+    unit: mEq/L
+    reference_range:
+      low: 3.5
+      high: 5.1
+    plausible_range:
+      min: 2.0
+      max: 8.0
+    cohorts: ["heart_failure", "hypertension_lipids", "post_event_discharge"]
+
+  - id: sodium
+    name: Sodium
+    aliases: ["Na+", "Serum Sodium", "Sodium (Na)"]
+    unit: mEq/L
+    reference_range:
+      low: 135.0
+      high: 145.0
+    plausible_range:
+      min: 110.0
+      max: 165.0
+    cohorts: ["heart_failure", "hypertension_lipids", "post_event_discharge"]
+
+  - id: nt_probnp
+    name: NT-proBNP
+    aliases: ["NT pro BNP", "N-Terminal Pro-BNP", "Natriuretic Peptide"]
+    unit: pg/mL
+    reference_range:
+      low: 0.0
+      high: 125.0
+    plausible_range:
+      min: 10.0
+      max: 15000.0
+    cohorts: ["heart_failure"]
+
+  - id: fasting_glucose
+    name: Fasting Blood Sugar
+    aliases: ["FBS", "Fasting Glucose", "Blood Glucose (Fasting)"]
+    unit: mg/dL
+    reference_range:
+      low: 70.0
+      high: 100.0
+    plausible_range:
+      min: 40.0
+      max: 500.0
+    cohorts: ["hypertension_lipids", "post_event_discharge"]

@@ -21,10 +21,18 @@
 | 2026-10-31 | 2.6 | Auth seed script for all 5 roles: patient, worker, clinician, supervisor, admin | 3c257a5 |
 | 2026-10-31 | 2.7 | Built React auth, LoginPage with 1-click role switcher, ProtectedRoute, role home pages; 10 Vitest tests passing | 3c257a5 |
 | 2026-10-31 | 2.8 | Implemented FastAPI JWT verification and require_role dependencies; 24 pytest tests passing | 3c257a5 |
-| 2026-10-31 | 3.1 | Created consent_records migration with consent_scope & messaging_channel enums, RLS policies | — |
-| 2026-10-31 | 3.2 | Documented plain-language consent text in English & Hindi in docs/consent_text_v1.md | — |
-| 2026-10-31 | 3.3 | Built POST /consent, POST /consent/{id}/revoke, GET /consent/status API endpoints | — |
-| 2026-10-31 | 3.4 | Implemented require_consent() central dependency; unconsented feature access returns 403 | — |
-| 2026-10-31 | 3.5 | Built Patient Consent UI with per-scope toggles, instant revocation, and append-only audit history | — |
-| 2026-10-31 | 3.6 | Verified instant revocation behavior blocking downstream endpoints in test_consent.py | — |
-| 2026-10-31 | 3.7 | Verified 'No consent: stop, nothing stored' path with zero data created | — |
+| 2026-10-31 | 3.1 | Created consent_records migration with consent_scope & messaging_channel enums, RLS policies | 6e55cee |
+| 2026-10-31 | 3.2 | Documented plain-language consent text in English & Hindi in docs/consent_text_v1.md | 6e55cee |
+| 2026-10-31 | 3.3 | Built POST /consent, POST /consent/{id}/revoke, GET /consent/status API endpoints | 6e55cee |
+| 2026-10-31 | 3.4 | Implemented require_consent() central dependency; unconsented feature access returns 403 | 6e55cee |
+| 2026-10-31 | 3.5 | Built Patient Consent UI with per-scope toggles, instant revocation, and append-only audit history | 6e55cee |
+| 2026-10-31 | 3.6 | Verified instant revocation behavior blocking downstream endpoints in test_consent.py | 6e55cee |
+| 2026-10-31 | 3.7 | Verified 'No consent: stop, nothing stored' path with zero data created | 6e55cee |
+| 2026-10-31 | 4.1 | Defined clinical value dictionary in synthetic/value_catalog.yaml with ranges and cohort bindings | — |
+| 2026-10-31 | 4.2 | Built synthetic/generate.py producing 120 patients across Cohorts A, B, C with masked phone numbers | — |
+| 2026-10-31 | 4.3 | Generated 1067 longitudinal visits with trajectory drift, sudden jump, and missed visits; stored ground truth | — |
+| 2026-10-31 | 4.4 | Created idempotent SQL seed loader in synthetic/seed_synthetic.sql; count tests verified | — |
+| 2026-10-31 | 4.5 | Generated 3 clean clinical lab-style PDF reports using ReportLab | — |
+| 2026-10-31 | 4.6 | Generated degraded variants: scanned PDFs and camera photo JPGs (3 templates x 3 styles = 9 files) | — |
+| 2026-10-31 | 4.7 | Output synthetic/reports/manifest.json mapping each file to its exact true values (OCR benchmark key) | — |
+| 2026-10-31 | 4.8 | Tested python -m synthetic.generate --all and updated README; 34 pytest tests passing | — |

@@ -1,0 +1,515 @@
+{
+  "template_A_clean.pdf": {
+    "template_id": "template_A",
+    "patient_name": "Aarav Sharma",
+    "sample_id": "MDL-2026-9812",
+    "date": "28-Oct-2026",
+    "expected_values": {
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 148.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "HIGH"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 94.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "HIGH"
+      },
+      "Fasting Blood Sugar": {
+        "analyte_name": "Fasting Blood Sugar",
+        "value": 118.0,
+        "unit": "mg/dL",
+        "reference_range": "70.0 - 100.0",
+        "flag": "HIGH"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 1.1,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "NORMAL"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.3,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      },
+      "Total Cholesterol": {
+        "analyte_name": "Total Cholesterol",
+        "value": 225.0,
+        "unit": "mg/dL",
+        "reference_range": "125.0 - 200.0",
+        "flag": "HIGH"
+      },
+      "LDL Cholesterol": {
+        "analyte_name": "LDL Cholesterol",
+        "value": 138.0,
+        "unit": "mg/dL",
+        "reference_range": "0.0 - 100.0",
+        "flag": "HIGH"
+      }
+    }
+  },
+  "template_A_scanned.pdf": {
+    "template_id": "template_A",
+    "patient_name": "Aarav Sharma",
+    "sample_id": "MDL-2026-9812",
+    "date": "28-Oct-2026",
+    "expected_values": {
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 148.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "HIGH"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 94.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "HIGH"
+      },
+      "Fasting Blood Sugar": {
+        "analyte_name": "Fasting Blood Sugar",
+        "value": 118.0,
+        "unit": "mg/dL",
+        "reference_range": "70.0 - 100.0",
+        "flag": "HIGH"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 1.1,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "NORMAL"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.3,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      },
+      "Total Cholesterol": {
+        "analyte_name": "Total Cholesterol",
+        "value": 225.0,
+        "unit": "mg/dL",
+        "reference_range": "125.0 - 200.0",
+        "flag": "HIGH"
+      },
+      "LDL Cholesterol": {
+        "analyte_name": "LDL Cholesterol",
+        "value": 138.0,
+        "unit": "mg/dL",
+        "reference_range": "0.0 - 100.0",
+        "flag": "HIGH"
+      }
+    }
+  },
+  "template_A_photo.jpg": {
+    "template_id": "template_A",
+    "patient_name": "Aarav Sharma",
+    "sample_id": "MDL-2026-9812",
+    "date": "28-Oct-2026",
+    "expected_values": {
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 148.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "HIGH"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 94.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "HIGH"
+      },
+      "Fasting Blood Sugar": {
+        "analyte_name": "Fasting Blood Sugar",
+        "value": 118.0,
+        "unit": "mg/dL",
+        "reference_range": "70.0 - 100.0",
+        "flag": "HIGH"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 1.1,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "NORMAL"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.3,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      },
+      "Total Cholesterol": {
+        "analyte_name": "Total Cholesterol",
+        "value": 225.0,
+        "unit": "mg/dL",
+        "reference_range": "125.0 - 200.0",
+        "flag": "HIGH"
+      },
+      "LDL Cholesterol": {
+        "analyte_name": "LDL Cholesterol",
+        "value": 138.0,
+        "unit": "mg/dL",
+        "reference_range": "0.0 - 100.0",
+        "flag": "HIGH"
+      }
+    }
+  },
+  "template_B_clean.pdf": {
+    "template_id": "template_B",
+    "patient_name": "Pooja Devi",
+    "sample_id": "APX-88210-C",
+    "date": "29-Oct-2026",
+    "expected_values": {
+      "NT-proBNP": {
+        "analyte_name": "NT-proBNP",
+        "value": 460.0,
+        "unit": "pg/mL",
+        "reference_range": "0.0 - 125.0",
+        "flag": "HIGH"
+      },
+      "Body Weight": {
+        "analyte_name": "Body Weight",
+        "value": 68.5,
+        "unit": "kg",
+        "reference_range": "50.0 - 75.0",
+        "flag": "NORMAL"
+      },
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 132.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "HIGH"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 84.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "HIGH"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.8,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      },
+      "Sodium (Na+)": {
+        "analyte_name": "Sodium (Na+)",
+        "value": 139.0,
+        "unit": "mEq/L",
+        "reference_range": "135.0 - 145.0",
+        "flag": "NORMAL"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 1.4,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "HIGH"
+      }
+    }
+  },
+  "template_B_scanned.pdf": {
+    "template_id": "template_B",
+    "patient_name": "Pooja Devi",
+    "sample_id": "APX-88210-C",
+    "date": "29-Oct-2026",
+    "expected_values": {
+      "NT-proBNP": {
+        "analyte_name": "NT-proBNP",
+        "value": 460.0,
+        "unit": "pg/mL",
+        "reference_range": "0.0 - 125.0",
+        "flag": "HIGH"
+      },
+      "Body Weight": {
+        "analyte_name": "Body Weight",
+        "value": 68.5,
+        "unit": "kg",
+        "reference_range": "50.0 - 75.0",
+        "flag": "NORMAL"
+      },
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 132.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "HIGH"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 84.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "HIGH"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.8,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      },
+      "Sodium (Na+)": {
+        "analyte_name": "Sodium (Na+)",
+        "value": 139.0,
+        "unit": "mEq/L",
+        "reference_range": "135.0 - 145.0",
+        "flag": "NORMAL"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 1.4,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "HIGH"
+      }
+    }
+  },
+  "template_B_photo.jpg": {
+    "template_id": "template_B",
+    "patient_name": "Pooja Devi",
+    "sample_id": "APX-88210-C",
+    "date": "29-Oct-2026",
+    "expected_values": {
+      "NT-proBNP": {
+        "analyte_name": "NT-proBNP",
+        "value": 460.0,
+        "unit": "pg/mL",
+        "reference_range": "0.0 - 125.0",
+        "flag": "HIGH"
+      },
+      "Body Weight": {
+        "analyte_name": "Body Weight",
+        "value": 68.5,
+        "unit": "kg",
+        "reference_range": "50.0 - 75.0",
+        "flag": "NORMAL"
+      },
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 132.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "HIGH"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 84.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "HIGH"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.8,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      },
+      "Sodium (Na+)": {
+        "analyte_name": "Sodium (Na+)",
+        "value": 139.0,
+        "unit": "mEq/L",
+        "reference_range": "135.0 - 145.0",
+        "flag": "NORMAL"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 1.4,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "HIGH"
+      }
+    }
+  },
+  "template_C_clean.pdf": {
+    "template_id": "template_C",
+    "patient_name": "Vikram Patel",
+    "sample_id": "SCHC-44019",
+    "date": "30-Oct-2026",
+    "expected_values": {
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 116.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "NORMAL"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 76.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "NORMAL"
+      },
+      "Total Cholesterol": {
+        "analyte_name": "Total Cholesterol",
+        "value": 180.0,
+        "unit": "mg/dL",
+        "reference_range": "125.0 - 200.0",
+        "flag": "NORMAL"
+      },
+      "Triglycerides": {
+        "analyte_name": "Triglycerides",
+        "value": 135.0,
+        "unit": "mg/dL",
+        "reference_range": "0.0 - 150.0",
+        "flag": "NORMAL"
+      },
+      "Fasting Blood Sugar": {
+        "analyte_name": "Fasting Blood Sugar",
+        "value": 92.0,
+        "unit": "mg/dL",
+        "reference_range": "70.0 - 100.0",
+        "flag": "NORMAL"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 0.9,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "NORMAL"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.1,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      }
+    }
+  },
+  "template_C_scanned.pdf": {
+    "template_id": "template_C",
+    "patient_name": "Vikram Patel",
+    "sample_id": "SCHC-44019",
+    "date": "30-Oct-2026",
+    "expected_values": {
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 116.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "NORMAL"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 76.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "NORMAL"
+      },
+      "Total Cholesterol": {
+        "analyte_name": "Total Cholesterol",
+        "value": 180.0,
+        "unit": "mg/dL",
+        "reference_range": "125.0 - 200.0",
+        "flag": "NORMAL"
+      },
+      "Triglycerides": {
+        "analyte_name": "Triglycerides",
+        "value": 135.0,
+        "unit": "mg/dL",
+        "reference_range": "0.0 - 150.0",
+        "flag": "NORMAL"
+      },
+      "Fasting Blood Sugar": {
+        "analyte_name": "Fasting Blood Sugar",
+        "value": 92.0,
+        "unit": "mg/dL",
+        "reference_range": "70.0 - 100.0",
+        "flag": "NORMAL"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 0.9,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "NORMAL"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.1,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      }
+    }
+  },
+  "template_C_photo.jpg": {
+    "template_id": "template_C",
+    "patient_name": "Vikram Patel",
+    "sample_id": "SCHC-44019",
+    "date": "30-Oct-2026",
+    "expected_values": {
+      "Systolic Blood Pressure": {
+        "analyte_name": "Systolic Blood Pressure",
+        "value": 116.0,
+        "unit": "mmHg",
+        "reference_range": "90.0 - 120.0",
+        "flag": "NORMAL"
+      },
+      "Diastolic Blood Pressure": {
+        "analyte_name": "Diastolic Blood Pressure",
+        "value": 76.0,
+        "unit": "mmHg",
+        "reference_range": "60.0 - 80.0",
+        "flag": "NORMAL"
+      },
+      "Total Cholesterol": {
+        "analyte_name": "Total Cholesterol",
+        "value": 180.0,
+        "unit": "mg/dL",
+        "reference_range": "125.0 - 200.0",
+        "flag": "NORMAL"
+      },
+      "Triglycerides": {
+        "analyte_name": "Triglycerides",
+        "value": 135.0,
+        "unit": "mg/dL",
+        "reference_range": "0.0 - 150.0",
+        "flag": "NORMAL"
+      },
+      "Fasting Blood Sugar": {
+        "analyte_name": "Fasting Blood Sugar",
+        "value": 92.0,
+        "unit": "mg/dL",
+        "reference_range": "70.0 - 100.0",
+        "flag": "NORMAL"
+      },
+      "Serum Creatinine": {
+        "analyte_name": "Serum Creatinine",
+        "value": 0.9,
+        "unit": "mg/dL",
+        "reference_range": "0.7 - 1.3",
+        "flag": "NORMAL"
+      },
+      "Potassium (K+)": {
+        "analyte_name": "Potassium (K+)",
+        "value": 4.1,
+        "unit": "mEq/L",
+        "reference_range": "3.5 - 5.1",
+        "flag": "NORMAL"
+      }
+    }
+  }
+}
