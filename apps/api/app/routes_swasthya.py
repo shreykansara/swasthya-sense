@@ -137,3 +137,4 @@ def get_dispatched_messages(limit: int = Query(50, ge=1, le=200)):
 def get_standard_presets():
     """Returns ready-to-test standard diagnostic lab report templates."""
     return registry_service.get_presets()
+

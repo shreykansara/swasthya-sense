@@ -30,9 +30,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 
 app = FastAPI(
-    title="Perfusion3D API",
+    title="Swasthya Sense API",
     version=settings.VERSION,
-    description="High-Throughput Multi-Target Coronary Stenosis & Ischemia Prediction Engine with Sub-4ms TreeSHAP Explainability",
+    description="Early Warning & Follow-Up Platform for High-Risk Cardiovascular Patients with Spatial Digital Twin and Sub-4ms TreeSHAP Explainability",
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
@@ -52,7 +52,7 @@ app.add_middleware(
 async def add_clinical_disclaimer_header(request: Request, call_next):
     """Injects mandatory clinical decision-support warning header into every API response."""
     response = await call_next(request)
-    response.headers["X-Application-Name"] = "Perfusion3D"
+    response.headers["X-Application-Name"] = "Swasthya Sense"
     response.headers["X-Clinical-Decision-Support"] = "True"
     response.headers["X-SaMD-Category"] = "Class-IIa-Educational-Prototype"
     return response
@@ -62,7 +62,7 @@ async def add_clinical_disclaimer_header(request: Request, call_next):
 @app.get("/health", tags=["System"])
 def root_health():
     return {
-        "service": "Perfusion3D API",
+        "service": "Swasthya Sense API",
         "status": "READY" if model_service.is_ready else "INITIALIZING",
         "version": settings.VERSION,
         "disclaimer": settings.CLINICAL_DISCLAIMER,

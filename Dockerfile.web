@@ -1,5 +1,5 @@
 # ==============================================================================
-# Multi-Stage Dockerfile for Perfusion3D Web Frontend (Task D2)
+# Multi-Stage Dockerfile for Swasthya Sense Web Frontend (Task D2)
 # ==============================================================================
 
 # --- Stage 1: Build React 18 + Three.js WebGL Frontend ---

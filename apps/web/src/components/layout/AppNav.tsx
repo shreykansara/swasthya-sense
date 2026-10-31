@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { Sun, Moon, Users, FileText, Stethoscope, ShieldCheck, Heart } from 'lucide-react';
-import { useWizardStore } from '../../store/useWizardStore';
-import { usePatientStore } from '../../store/usePatientStore';
-import type { AppRole } from '../../types/clinical';
+import { Sun, Moon, Users, FileText, Stethoscope, ShieldCheck, Heart, LogOut, KeyRound } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { useAuthStore } from '../../store/useAuthStore';
+import { UserRole } from '../../lib/supabase';
 import { Trace } from '../ui/Trace';
 
 export interface AppNavProps {
@@ -16,24 +15,42 @@ export const AppNav: React.FC<AppNavProps> = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { resolvedTheme, setTheme } = useTheme();
-  const activeRole = usePatientStore((s) => s.activeRole);
-  const setActiveRole = usePatientStore((s) => s.setActiveRole);
+  const { user, loginAsDemo, logout } = useAuthStore();
 
-  const navLinks = [
-    { label: 'Worklist & Triage', path: '/', icon: Users },
-    { label: 'Lab Intake', path: '/lab-intake', icon: FileText },
-    { label: "Doctor's 3D Station", path: '/doctor-consultation', icon: Stethoscope },
-    { label: 'Audit & Governance', path: '/audit', icon: ShieldCheck },
-    { label: 'Assessment Stepper', path: '/welcome', icon: Heart },
-  ];
+  const userRole: UserRole = user?.role || 'doctor';
 
-  const handleRoleChange = (role: AppRole) => {
-    setActiveRole(role);
-    // Contextual redirection based on chosen role if at root
-    if (role === 'worker' && location.pathname === '/') {
+  // Strict 3-Persona Role-Based Navigation Links
+  const getNavLinks = () => {
+    if (userRole === 'lab_technician') {
+      // Lab Tech can ONLY and ONLY upload reports
+      return [
+        { label: 'Lab Intake Desk', path: '/lab-intake', icon: FileText },
+      ];
+    } else if (userRole === 'patient') {
+      // Patient views when to visit doctor again and practices
+      return [
+        { label: 'My Health & Next Visit', path: '/patient-portal', icon: Heart },
+      ];
+    } else {
+      // Doctor views dashboard, reports, 3D heart, opinion
+      return [
+        { label: 'Worklist Dashboard', path: '/dashboard', icon: Users },
+        { label: "Doctor's 3D Station", path: '/doctor-consultation', icon: Stethoscope },
+        { label: 'Audit Trail', path: '/audit', icon: ShieldCheck },
+      ];
+    }
+  };
+
+  const navLinks = getNavLinks();
+
+  const handleRoleSwitch = (newRole: UserRole) => {
+    loginAsDemo(newRole);
+    if (newRole === 'doctor') {
+      navigate('/dashboard');
+    } else if (newRole === 'lab_technician') {
       navigate('/lab-intake');
-    } else if (role === 'clinician' && location.pathname === '/') {
-      navigate('/doctor-consultation');
+    } else {
+      navigate('/patient-portal');
     }
   };
 
@@ -57,7 +74,7 @@ export const AppNav: React.FC<AppNavProps> = () => {
       >
         {/* Brand Left Zone */}
         <Link
-          to="/"
+          to={userRole === 'patient' ? '/patient-portal' : userRole === 'lab_technician' ? '/lab-intake' : '/dashboard'}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -88,12 +105,12 @@ export const AppNav: React.FC<AppNavProps> = () => {
                 letterSpacing: '0.4px',
               }}
             >
-              PERFUSION3D TWIN
+              EARLY WARNING SYSTEM
             </span>
           </div>
         </Link>
 
-        {/* Center Navigation Links */}
+        {/* Center Navigation Links - STRICTLY RESTRICTED PER PERSONA */}
         <nav aria-label="Clinical Workspaces" style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
           {navLinks.map((tab) => {
             const Icon = tab.icon;
@@ -106,7 +123,7 @@ export const AppNav: React.FC<AppNavProps> = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '6px 10px',
+                  padding: '6px 12px',
                   borderRadius: 'var(--radius)',
                   fontSize: '12px',
                   fontFamily: 'var(--fs)',
@@ -125,13 +142,14 @@ export const AppNav: React.FC<AppNavProps> = () => {
           })}
         </nav>
 
-        {/* Right Zone: User Persona Switcher & Theme Toggle */}
+        {/* Right Zone: 3-Persona Switcher, Profile Badge & Theme Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Persona Switcher Dropdown */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '11px', color: 'var(--mut)', fontFamily: 'var(--fs)' }}>Sign-in Role:</span>
+            <span style={{ fontSize: '11px', color: 'var(--mut)', fontFamily: 'var(--fs)' }}>Persona:</span>
             <select
-              value={activeRole}
-              onChange={(e) => handleRoleChange(e.target.value as AppRole)}
+              value={userRole}
+              onChange={(e) => handleRoleSwitch(e.target.value as UserRole)}
               aria-label="Active Medical Persona"
               style={{
                 height: '32px',
@@ -146,12 +164,34 @@ export const AppNav: React.FC<AppNavProps> = () => {
                 cursor: 'pointer',
               }}
             >
-              <option value="worker">🧪 Rajesh Kumar (Lab Tech)</option>
-              <option value="clinician">🩺 Dr. Aditi Sharma (Cardiologist)</option>
-              <option value="supervisor">📋 Sunita Devi (ASHA Worker)</option>
-              <option value="admin">🛡️ Vikram Malhotra (Audit)</option>
+              <option value="doctor">🩺 Doctor (Aditi Sharma)</option>
+              <option value="patient">👤 Patient (Ramesh Patel)</option>
+              <option value="lab_technician">🧪 Lab Tech (Rajesh Kumar)</option>
             </select>
           </div>
+
+          {/* Login / Auth Portal link */}
+          <Link
+            to="/login"
+            title="Open Supabase Login & Account Portal"
+            style={{
+              height: '32px',
+              padding: '0 8px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              backgroundColor: 'var(--hov)',
+              border: '1px solid var(--bd)',
+              borderRadius: 'var(--radius)',
+              color: 'var(--ink)',
+              textDecoration: 'none',
+              fontSize: '11px',
+              fontFamily: 'var(--fs)',
+            }}
+          >
+            <KeyRound size={13} />
+            <span>Auth</span>
+          </Link>
 
           {/* Theme toggle */}
           <button

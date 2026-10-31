@@ -1,5 +1,5 @@
 # ==============================================================================
-# Multi-Stage Production Dockerfile: Perfusion3D
+# Multi-Stage Production Dockerfile: Swasthya Sense
 # Multimodal AI Hackathon 2026 - Track A: Cardiovascular Risk Platform
 # ==============================================================================
 

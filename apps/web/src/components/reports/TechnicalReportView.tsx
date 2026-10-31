@@ -162,7 +162,7 @@ export const TechnicalReportView: React.FC<TechnicalReportViewProps> = ({ report
             gap: '8px',
           }}
         >
-          <span>Model version: {report.report_header.model_version || 'Perfusion3D v1.0.0'}</span>
+          <span>Model version: {report.report_header.model_version || 'Swasthya Sense v1.0.0'}</span>
           <span>Date: {report.report_header.generation_date_time}</span>
           <span>Patient: {report.report_header.patient_age} years, {report.report_header.patient_sex}</span>
         </div>

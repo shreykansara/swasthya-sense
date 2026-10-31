@@ -139,6 +139,7 @@ export const swasthyaApi = {
     success: boolean;
     patient_id: string;
     patient: PatientRecord;
+    is_update?: boolean;
     dispatched_alert?: DispatchedAlert;
     message: string;
   }> {
@@ -215,3 +216,4 @@ export const swasthyaApi = {
     return res.json();
   },
 };
+

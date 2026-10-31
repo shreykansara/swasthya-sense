@@ -124,7 +124,7 @@ export const WelcomePage: React.FC = () => {
               margin: 0,
             }}
           >
-            Welcome to Perfusion3D
+            Welcome to Swasthya Sense
           </h1>
 
           {/* Customer-friendly Lead Paragraph */}

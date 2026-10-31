@@ -335,7 +335,7 @@ export const DoctorConsultationPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Heart size={18} color="var(--high)" />
               <h2 style={{ fontFamily: 'var(--fs)', fontSize: '15px', fontWeight: 600, color: 'var(--ink)', margin: 0 }}>
-                Coronary Digital Twin (Perfusion3D)
+                Coronary Digital Twin
               </h2>
             </div>
             <span style={{ fontFamily: 'var(--fm)', fontSize: '11px', color: 'var(--mut)' }}>
@@ -622,3 +622,4 @@ export const DoctorConsultationPage: React.FC = () => {
 };
 
 export default DoctorConsultationPage;
+

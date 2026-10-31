@@ -23,7 +23,11 @@ from apps.api.app.services.explainer import explain_patient
 from apps.api.app.services.model_service import model_service
 from apps.api.app.utils.logger import logger
 
-REGISTRY_PATH = Path("synthetic/cohort_registry.json")
+REGISTRY_PATH = Path("synthetic/permutations_registry.json")
+if not REGISTRY_PATH.exists():
+    REGISTRY_PATH = Path("synthetic/cohort_registry.json")
+
+from synthetic.generate_permutations import build_practices_for_patient
 
 
 # Standard Demo Report Presets for 1-click clinical testing
@@ -325,14 +329,28 @@ class RegistryService:
         """
         self.initialize()
 
-        # Generate unique patient ID
-        new_num = len(self._patients) + 1
-        patient_id = f"PAT-{new_num:04d}"
+        # Check if patient already exists (identified by patient_id or matching name)
+        provided_pid = report_data.get("patient_id") or report_data.get("patientId")
+        existing_patient = None
+        if provided_pid and provided_pid in self._patients:
+            existing_patient = self._patients[provided_pid]
+            patient_id = provided_pid
+            is_update = True
+        else:
+            matching = [p for p in self._patients.values() if p.get("full_name", "").strip().lower() == report_data.get("full_name", "").strip().lower() and report_data.get("full_name")]
+            if matching and not provided_pid:
+                existing_patient = matching[0]
+                patient_id = existing_patient["patient_id"]
+                is_update = True
+            else:
+                new_num = len(self._patients) + 1
+                patient_id = provided_pid if provided_pid else f"PAT-{new_num:04d}"
+                is_update = False
 
-        full_name = report_data.get("full_name", f"Patient {patient_id}")
-        raw_phone = report_data.get("phone", "+91-98000-00000")
+        full_name = report_data.get("full_name", existing_patient.get("full_name") if existing_patient else f"Patient {patient_id}")
+        raw_phone = report_data.get("phone", existing_patient.get("phone") if existing_patient else "+91-98000-00000")
         masked_phone = f"+91-XXXXX-{raw_phone[-4:]}" if len(raw_phone) >= 4 else "+91-XXXXX-0000"
-        cohort = report_data.get("cohort", "Cohort B: Post-Event Discharge")
+        cohort = report_data.get("cohort", existing_patient.get("cohort") if existing_patient else "Cohort B: Post-Event Discharge (Post-MI)")
 
         # Map report to schema
         schema_input = self._build_schema_input(report_data, patient_id=patient_id)
@@ -435,8 +453,15 @@ class RegistryService:
                 "lcx": predictions.vessels["lcx"].color_rgb,
                 "rca": predictions.vessels["rca"].color_rgb,
             },
-            # Doctor Consultation (Initial unconsulted state)
-            "doctor_consultation": {
+            # Doctor Consultation (preserve if update, else reset to pending)
+            "doctor_consultation": existing_patient.get("doctor_consultation", {
+                "consulted": False,
+                "doctor_name": None,
+                "consultation_date": None,
+                "clinical_notes": None,
+                "recommendation": None,
+                "triage_decision": None,
+            }) if is_update else {
                 "consulted": False,
                 "doctor_name": None,
                 "consultation_date": None,
@@ -444,6 +469,11 @@ class RegistryService:
                 "recommendation": None,
                 "triage_decision": None,
             },
+            "prescribed_practices": build_practices_for_patient(
+                risk="HIGH_RISK" if is_high_priority else ("MODERATE_RISK" if cad_risk > 0.40 else "LOW_RISK"),
+                cohort=cohort,
+                doctor_consulted=existing_patient.get("doctor_consultation", {}).get("consulted", False) if is_update else False,
+            ),
         }
 
         # Also merge base clinical features for backwards compatibility
@@ -453,17 +483,19 @@ class RegistryService:
         # Save to registry
         self._patients[patient_id] = patient_record
 
-        # Audit Log: Report Upload
+        # Audit Log: Report Upload or Update
+        audit_action = "PATIENT_REPORT_UPDATED_WITH_MOST_RECENT" if is_update else "PATIENT_PROFILE_CREATED_FROM_REPORT"
         self._log_audit(
             actor_id=uploaded_by,
             actor_role="lab_technician",
-            action="PATIENT_PROFILE_CREATED_FROM_REPORT",
+            action=audit_action,
             patient_id=patient_id,
             details={
                 "patient_name": full_name,
                 "cad_risk": round(cad_risk, 3),
                 "is_high_priority": is_high_priority,
                 "triage_lane": triage_lane,
+                "is_update": is_update,
             },
         )
 
@@ -471,7 +503,7 @@ class RegistryService:
         dispatched_alert = None
         if is_high_priority:
             message_body = (
-                f"🚨 URGENT MEDICAL NOTIFICATION [Swasthya Sense]: Dear {full_name}, your cardiac lab diagnostic panel "
+                f"🚨 URGENT MEDICAL NOTIFICATION [Swasthya Sense]: Dear {full_name}, your recent cardiac lab diagnostic panel "
                 f"(ID: {patient_id}) indicates HIGH-RISK cardiovascular markers ({', '.join(urgent_reasons[:2])}). "
                 f"Please walk into the Cardiology OPD immediately or contact emergency services."
             )
@@ -490,8 +522,9 @@ class RegistryService:
             "success": True,
             "patient_id": patient_id,
             "patient": patient_record,
+            "is_update": is_update,
             "dispatched_alert": dispatched_alert,
-            "message": "Patient profile created successfully from lab diagnostic report.",
+            "message": f"Patient profile {patient_id} ({full_name}) successfully {'updated with most recent laboratory report' if is_update else 'created from diagnostic report'}.",
         }
 
     def record_doctor_opinion(

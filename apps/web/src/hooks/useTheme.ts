@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 export type ThemePreference = 'system' | 'light' | 'dark';
 export type ResolvedTheme = 'light' | 'dark';
 
-const STORAGE_KEY = 'perfusion3d-theme';
+const STORAGE_KEY = 'swasthya-theme';
 
 function getSystemTheme(): ResolvedTheme {
   if (typeof window === 'undefined') return 'light';

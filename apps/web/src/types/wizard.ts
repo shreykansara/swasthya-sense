@@ -1,6 +1,6 @@
 /**
  * Wizard Navigation, State & Report Type Definitions
- * Perfusion3D: Clinical Risk Assessment & Reporting System
+ * Swasthya Sense: Clinical Risk Assessment & Reporting System
  */
 
 import type { CompleteAnalysisResponse, PatientData } from './clinical';

@@ -117,7 +117,7 @@ export const LandingNav: React.FC = () => {
             textDecoration: 'none',
             color: 'inherit',
           }}
-          aria-label="Perfusion3D Home"
+          aria-label="Swasthya Sense Home"
         >
           <Trace width={36} height={16} className="trace-initial" />
           <span

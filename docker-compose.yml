@@ -1,5 +1,5 @@
 # ==============================================================================
-# Docker Compose: Perfusion3D Multi-Service Architecture (Task D4)
+# Docker Compose: Swasthya Sense Multi-Service Architecture
 # Web (Nginx SPA proxy) on :8080 | API (FastAPI ML Inference) on :8000
 # ==============================================================================
 
@@ -10,8 +10,8 @@ services:
       dockerfile: Dockerfile.api
       args:
         GIT_SHA: ${GIT_SHA:-dev}
-    image: perfusion3d-api:latest
-    container_name: perfusion3d_api
+    image: swasthya-sense-api:latest
+    container_name: swasthya_sense_api
     ports:
       - "8000:8000"
     environment:
@@ -31,8 +31,8 @@ services:
       dockerfile: Dockerfile.web
       args:
         GIT_SHA: ${GIT_SHA:-dev}
-    image: perfusion3d-web:latest
-    container_name: perfusion3d_web
+    image: swasthya-sense-web:latest
+    container_name: swasthya_sense_web
     ports:
       - "8080:80"
     depends_on:

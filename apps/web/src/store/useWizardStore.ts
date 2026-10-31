@@ -19,8 +19,11 @@ import { PATIENT_PROFILES, usePatientStore } from './usePatientStore';
 // Clean up legacy storage keys on module startup
 if (typeof window !== 'undefined') {
   try {
+    localStorage.removeItem('swasthya-wizard-session');
+    localStorage.removeItem('swasthya-wizard-v2');
     localStorage.removeItem('perfusion3d-wizard-session');
     localStorage.removeItem('perfusion3d-wizard-v2');
+    sessionStorage.removeItem('swasthya-wizard-session');
     sessionStorage.removeItem('perfusion3d-wizard-session');
   } catch (e) {
     // Ignore storage errors on startup
@@ -539,6 +542,7 @@ export const useWizardStore = create<WizardState>()(
 
       reset: () => {
         try {
+          sessionStorage.removeItem('swasthya-wizard-v2');
           sessionStorage.removeItem('perfusion3d-wizard-v2');
         } catch (e) {
           // Ignore
@@ -571,7 +575,7 @@ export const useWizardStore = create<WizardState>()(
       },
     }),
     {
-      name: 'perfusion3d-wizard-v2',
+      name: 'swasthya-wizard-v2',
       storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => {
         if (!state.isDirty) {

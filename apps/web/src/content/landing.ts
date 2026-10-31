@@ -7,7 +7,7 @@ export const highThreshold = Math.round(RISK_BANDS.High.minProb * 100); // Inter
 
 export const LANDING_COPY = {
   nav: {
-    wordmark: 'Perfusion3D',
+    wordmark: 'Swasthya Sense',
     links: [
       { id: 'how-it-works', label: 'How it works' },
       { id: 'what-you-get', label: 'How this helps you' },

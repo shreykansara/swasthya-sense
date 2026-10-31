@@ -104,6 +104,37 @@ def test_lab_tech_upload_critical_report_triggers_urgent_alert(client):
     assert "Cardiology OPD" in alert["body"]
 
 
+def test_lab_tech_upload_report_for_existing_patient_updates_most_recent_values(client):
+    # Fetch an existing patient
+    patients_res = client.get("/api/v1/registry/patients")
+    assert patients_res.status_code == 200
+    existing = patients_res.json()[0]
+    pid = existing["patient_id"]
+
+    update_payload = {
+        "uploaded_by": "Rajesh Kumar (Sr. Lab Tech)",
+        "report": {
+            "patient_id": pid,
+            "full_name": existing["full_name"],
+            "BP": 178.0,  # Updated new high BP
+            "Diastolic_BP": 105.0,
+            "FBS": 195.0,
+            "LDL": 172.0,
+            "St_Elevation": "1",
+            "Region_RWMA": "1",
+        },
+    }
+
+    res = client.post("/api/v1/registry/upload-report", json=update_payload)
+    assert res.status_code == 200
+    data = res.json()
+    assert data["success"] is True
+    assert data["is_update"] is True
+    assert data["patient_id"] == pid
+    assert data["patient"]["report_data"]["vitals"]["BP"] == 178.0
+    assert "updated with most recent laboratory report" in data["message"]
+
+
 def test_doctor_sign_off_manual_clinical_opinion(client):
     # Fetch a patient in pending status
     patients_res = client.get("/api/v1/registry/patients?status=PENDING_DOCTOR_CONSULTATION")
@@ -156,3 +187,4 @@ def test_frontline_send_simulated_reminder_and_audit(client):
     assert audit_res.status_code == 200
     audit = audit_res.json()
     assert any(a["action"] == "SIMULATED_COMMUNICATION_DISPATCHED" for a in audit)
+

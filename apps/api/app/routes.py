@@ -34,7 +34,7 @@ api_router.include_router(swasthya_router)
 def get_health() -> HealthResponse:
     """Returns the operational status, loaded model heads, and feature count."""
     return HealthResponse(
-        service="Perfusion3D API",
+        service="Swasthya Sense API",
         status="READY" if model_service.is_ready else "INITIALIZING",
         version=settings.VERSION,
         models_loaded=list(model_service.models.keys()),

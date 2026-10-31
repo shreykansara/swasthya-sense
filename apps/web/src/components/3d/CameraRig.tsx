@@ -76,11 +76,11 @@ export const CameraRig: React.FC<CameraRigProps> = ({
 
       // Check session storage for intro sway
       if (enableIntroSway && typeof window !== 'undefined') {
-        const hasSwayed = sessionStorage.getItem('perfusion3d_intro_swayed');
+        const hasSwayed = sessionStorage.getItem('swasthya_intro_swayed') || sessionStorage.getItem('perfusion3d_intro_swayed');
         if (!hasSwayed) {
           isSwayActive.current = true;
           swayElapsed.current = 0;
-          sessionStorage.setItem('perfusion3d_intro_swayed', '1');
+          sessionStorage.setItem('swasthya_intro_swayed', '1');
         }
       }
     }
