@@ -1,0 +1,17 @@
+rule_id: RULE-K-HYPO-001
+version: '1.0'
+title: Low Serum Potassium
+description: Flags serum potassium levels below the standard range (< 3.5 mEq/L).
+cohort: any
+urgency: urgent
+reason_code: LOW_SERUM_POTASSIUM
+conditions:
+- analyte: potassium
+  operator: <
+  threshold: 3.5
+  unit: mEq/L
+patient_explanation: Your potassium level is lower than the laboratory safe range.
+  A clinician will review replacement steps.
+clinician_summary: Potassium < 3.5 mEq/L requires urgent electrolyte assessment.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

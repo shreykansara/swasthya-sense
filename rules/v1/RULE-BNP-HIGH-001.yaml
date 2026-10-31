@@ -1,0 +1,17 @@
+rule_id: RULE-BNP-HIGH-001
+version: '1.0'
+title: Markedly Elevated Natriuretic Peptide
+description: Flags NT-proBNP levels at or above 1000 pg/mL.
+cohort: cohort_c
+urgency: urgent
+reason_code: HIGH_NTPROBNP
+conditions:
+- analyte: nt_probnp
+  operator: '>='
+  threshold: 1000.0
+  unit: pg/mL
+patient_explanation: Your peptide lab value is substantially above normal levels.
+  An urgent clinical check-in is recommended.
+clinician_summary: NT-proBNP >= 1000 pg/mL triggers urgent tier escalation.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

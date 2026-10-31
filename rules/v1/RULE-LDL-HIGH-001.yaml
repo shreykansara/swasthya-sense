@@ -1,0 +1,17 @@
+rule_id: RULE-LDL-HIGH-001
+version: '1.0'
+title: Elevated LDL Level
+description: Flags LDL cholesterol levels at or above 160 mg/dL.
+cohort: any
+urgency: soon
+reason_code: ELEVATED_LDL_LEVEL
+conditions:
+- analyte: ldl_cholesterol
+  operator: '>='
+  threshold: 160.0
+  unit: mg/dL
+patient_explanation: Your LDL lipid level is higher than the standard target range.
+  Your clinician will evaluate your lipid plan soon.
+clinician_summary: LDL >= 160 mg/dL requires prioritized lipid management review.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

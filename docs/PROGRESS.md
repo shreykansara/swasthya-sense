@@ -44,11 +44,19 @@
 | 2026-10-31 | 5.6 | Ran scripts/eval_ocr.py against all 9 synthetic documents; documented results in docs/OCR_EVAL.md (Clean 100%, Scanned 100%) | 18c90bb |
 | 2026-10-31 | 5.7 | Built mobile-first ReportIntakePage with document preview, cell highlighting, editable values checklist | 18c90bb |
 | 2026-10-31 | 5.8 | Verified downstream endpoints only consume confirmed values; 36 backend tests and 10 frontend tests passing | 18c90bb |
-| 2026-10-31 | 6.1 | Implemented Groq client with settings integration and graceful fallback when unconfigured or offline | — |
-| 2026-10-31 | 6.2 | Created guards/forbidden_terms.yaml with English and Hindi diagnostic/condition terms denylist | — |
-| 2026-10-31 | 6.3 | Built Class-6 deterministic template generator stating only tested values and reference range status | — |
-| 2026-10-31 | 6.4 | Implemented LLM privacy filter ensuring zero PII crosses the boundary | — |
-| 2026-10-31 | 6.5 | Built prompt-constrained Groq LLM caller enforcing never-diagnose rule and bilingual output | — |
-| 2026-10-31 | 6.6 | Implemented adversarial output verification guards: forbidden terms scanner & number preservation | — |
-| 2026-10-31 | 6.7 | Built PlainReadoutCard with English/Hindi switcher and Web SpeechSynthesis Read Aloud button | — |
-| 2026-10-31 | 6.8 | Added 9 backend unit & adversarial tests and 3 frontend tests; 45 backend and 13 frontend tests passing | — |
+| 2026-10-31 | 6.1 | Implemented Groq client with settings integration and graceful fallback when unconfigured or offline | 7519e9f |
+| 2026-10-31 | 6.2 | Created guards/forbidden_terms.yaml with English and Hindi diagnostic/condition terms denylist | 7519e9f |
+| 2026-10-31 | 6.3 | Built Class-6 deterministic template generator stating only tested values and reference range status | 7519e9f |
+| 2026-10-31 | 6.4 | Implemented LLM privacy filter ensuring zero PII crosses the boundary | 7519e9f |
+| 2026-10-31 | 6.5 | Built prompt-constrained Groq LLM caller enforcing never-diagnose rule and bilingual output | 7519e9f |
+| 2026-10-31 | 6.6 | Implemented adversarial output verification guards: forbidden terms scanner & number preservation | 7519e9f |
+| 2026-10-31 | 6.7 | Built PlainReadoutCard with English/Hindi switcher and Web SpeechSynthesis Read Aloud button | 7519e9f |
+| 2026-10-31 | 6.8 | Added 9 backend unit & adversarial tests and 3 frontend tests; 45 backend and 13 frontend tests passing | 7519e9f |
+| 2026-10-31 | 7.1 | Defined YAML clinical rule format (urgent, soon, routine; reason codes; zero condition names) | — |
+| 2026-10-31 | 7.2 | Authored 14 versioned rules in rules/v1/*.yaml covering acute biomarkers, electrolytes, BP, and delta jumps | — |
+| 2026-10-31 | 7.3 | Implemented pure-Python rule evaluator with waterfall contribution scores and sign-off gating | — |
+| 2026-10-31 | 7.4 | Implemented case_flags table migration and automated flag persistence on report confirmation | — |
+| 2026-10-31 | 7.5 | Adapted imported waterfall chart into WhyFlaggedCard displaying rule contribution bars and thresholds | — |
+| 2026-10-31 | 7.6 | Built adversarial rule scanner in test_forbidden_leakage.py proving zero condition words across all rules | — |
+| 2026-10-31 | 7.7 | Built AdminRulesPage for governance inspection and sign-off, plus clinician override with mandatory audit reason | — |
+| 2026-10-31 | 7.8 | Verified with 8 new engine tests (55 backend total) and 3 frontend tests (16 frontend total) | — |

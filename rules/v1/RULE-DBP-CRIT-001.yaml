@@ -1,0 +1,17 @@
+rule_id: RULE-DBP-CRIT-001
+version: '1.0'
+title: Critical Diastolic Blood Pressure Elevation
+description: Flags diastolic blood pressure readings at or above 110 mmHg.
+cohort: any
+urgency: urgent
+reason_code: CRITICAL_DIASTOLIC_BP
+conditions:
+- analyte: diastolic_bp
+  operator: '>='
+  threshold: 110.0
+  unit: mmHg
+patient_explanation: Your diastolic blood pressure reading is very high. An urgent
+  review is recommended.
+clinician_summary: Diastolic BP >= 110 mmHg requires urgent evaluation.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

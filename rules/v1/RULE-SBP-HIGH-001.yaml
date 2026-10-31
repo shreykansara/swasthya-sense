@@ -1,0 +1,17 @@
+rule_id: RULE-SBP-HIGH-001
+version: '1.0'
+title: Elevated Systolic Blood Pressure
+description: Flags systolic blood pressure readings between 140 mmHg and 179 mmHg.
+cohort: any
+urgency: soon
+reason_code: ELEVATED_SYSTOLIC_BP
+conditions:
+- analyte: systolic_bp
+  operator: '>='
+  threshold: 140.0
+  unit: mmHg
+patient_explanation: Your systolic blood pressure reading is higher than normal. Your
+  clinician will evaluate your treatment plan soon.
+clinician_summary: Systolic BP >= 140 mmHg requires clinical follow-up.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

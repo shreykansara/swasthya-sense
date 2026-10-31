@@ -1,0 +1,17 @@
+rule_id: RULE-DBP-HIGH-001
+version: '1.0'
+title: Elevated Diastolic Blood Pressure
+description: Flags diastolic blood pressure readings at or above 90 mmHg.
+cohort: any
+urgency: soon
+reason_code: ELEVATED_DIASTOLIC_BP
+conditions:
+- analyte: diastolic_bp
+  operator: '>='
+  threshold: 90.0
+  unit: mmHg
+patient_explanation: Your diastolic blood pressure reading is above the standard range.
+  A clinician will review this with you soon.
+clinician_summary: Diastolic BP >= 90 mmHg requires routine-to-soon review.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'
