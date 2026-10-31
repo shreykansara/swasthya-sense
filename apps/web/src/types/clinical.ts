@@ -7,6 +7,7 @@
 export type RiskTier = 'LOW' | 'BORDERLINE' | 'HIGH' | 'CRITICAL';
 export type TargetVessel = 'CAD' | 'LAD' | 'LCX' | 'RCA';
 export type ImpactDirection = 'INCREASES_RISK' | 'DECREASES_RISK';
+export type AppRole = 'patient' | 'worker' | 'clinician' | 'supervisor' | 'admin';
 
 export interface PatientData {
   patient_id?: string;

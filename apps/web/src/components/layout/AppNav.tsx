@@ -3,6 +3,8 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react';
 import { WIZARD_STEPS } from '../../types/wizard';
 import { useWizardStore } from '../../store/useWizardStore';
+import { usePatientStore } from '../../store/usePatientStore';
+import type { AppRole } from '../../types/clinical';
 import { useTheme } from '../../hooks/useTheme';
 import { Trace } from '../ui/Trace';
 import { PrimaryButton } from '../ui/PrimaryButton';
@@ -21,6 +23,8 @@ export const AppNav: React.FC<AppNavProps> = ({ forceStep, forceState }) => {
   const { resolvedTheme, setTheme } = useTheme();
   const reset = useWizardStore((s) => s.reset);
   const isStepUnlocked = useWizardStore((s) => s.isStepUnlocked);
+  const activeRole = usePatientStore((s) => s.activeRole);
+  const setActiveRole = usePatientStore((s) => s.setActiveRole);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const prevStepRef = useRef<number | null>(null);
@@ -157,7 +161,31 @@ export const AppNav: React.FC<AppNavProps> = ({ forceStep, forceState }) => {
         </nav>
 
         {/* Task 2.4 RIGHT zone */}
-        <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <select
+            value={activeRole}
+            onChange={(e) => setActiveRole(e.target.value as AppRole)}
+            aria-label="Active Clinical Role"
+            className="app-chrome"
+            style={{
+              height: '32px',
+              padding: '0 8px',
+              backgroundColor: 'var(--panel)',
+              border: '1px solid var(--bds)',
+              borderRadius: 'var(--radius)',
+              color: 'var(--ink)',
+              fontFamily: 'var(--fs)',
+              fontSize: '11px',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            <option value="clinician">Clinician (3D Twin)</option>
+            <option value="worker">Health Worker</option>
+            <option value="supervisor">Supervisor</option>
+            <option value="patient">Patient</option>
+            <option value="admin">Admin</option>
+          </select>
           {/* a) Theme toggle button */}
           <button
             type="button"

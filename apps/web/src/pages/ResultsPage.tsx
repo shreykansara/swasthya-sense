@@ -32,6 +32,8 @@ export const ResultsPage: React.FC = () => {
 
   // Two-way synchronization with 3D model
   const activeVesselFocus = usePatientStore((s) => s.activeVesselFocus);
+  const activeRole = usePatientStore((s) => s.activeRole);
+  const setActiveRole = usePatientStore((s) => s.setActiveRole);
   const setVesselFocus = (focus: string) => {
     useWizardStore.getState().setVesselFocus(focus);
   };
@@ -121,31 +123,108 @@ export const ResultsPage: React.FC = () => {
         }}
       >
         {/* LEFT, one Panel (class wipe results-panel-0, --i 0) with EXISTING 3D canvas mounted unchanged */}
-        <Panel
-          className="wipe results-panel-0 flex flex-col w-full"
-          style={{
-            '--i': 0,
-            padding: '12px 14px',
-          } as React.CSSProperties}
-        >
-          <div
+        {activeRole === 'clinician' ? (
+          <Panel
+            className="wipe results-panel-0 flex flex-col w-full"
             style={{
-              width: '100%',
-              height: '480px',
-              backgroundColor: 'var(--panel)',
-              borderRadius: '3px',
-              overflow: 'hidden',
-              position: 'relative',
-              isolation: 'isolate',
-              zIndex: 1,
-            }}
+              '--i': 0,
+              padding: '12px 14px',
+            } as React.CSSProperties}
           >
-            <HeartCanvas />
-          </div>
+            <div
+              style={{
+                width: '100%',
+                height: '480px',
+                backgroundColor: 'var(--panel)',
+                borderRadius: '3px',
+                overflow: 'hidden',
+                position: 'relative',
+                isolation: 'isolate',
+                zIndex: 1,
+              }}
+            >
+              <HeartCanvas />
+            </div>
 
-          {/* 3-column legend: 3px bar in risk color above 11px --mut label */}
-          <ColorScaleLegend />
-        </Panel>
+            {/* 3-column legend: 3px bar in risk color above 11px --mut label */}
+            <ColorScaleLegend />
+          </Panel>
+        ) : (
+          <Panel
+            className="wipe results-panel-0 flex flex-col w-full items-center justify-center text-center p-8"
+            style={{
+              '--i': 0,
+              padding: '24px',
+              minHeight: '480px',
+            } as React.CSSProperties}
+          >
+            <div
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--hov)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '28px',
+                marginBottom: '16px',
+              }}
+            >
+              🩺
+            </div>
+            <h3
+              style={{
+                fontFamily: 'var(--fs)',
+                fontSize: '17px',
+                fontWeight: 600,
+                color: 'var(--ink)',
+                margin: '0 0 8px 0',
+              }}
+            >
+              Clinician Decision Support Gate
+            </h3>
+            <p
+              style={{
+                fontFamily: 'var(--fs)',
+                fontSize: '13px',
+                color: 'var(--mut)',
+                maxWidth: '380px',
+                margin: '0 0 16px 0',
+                lineHeight: 1.5,
+              }}
+            >
+              The interactive 3D coronary twin and localized TreeSHAP hemodynamic attributions are restricted to authorized medical officers.
+            </p>
+            <div
+              style={{
+                fontSize: '11px',
+                padding: '4px 10px',
+                borderRadius: '12px',
+                backgroundColor: 'var(--hov)',
+                color: 'var(--mut)',
+                marginBottom: '16px',
+              }}
+            >
+              Active role: <strong style={{ color: 'var(--ink)', textTransform: 'capitalize' }}>{activeRole}</strong>
+            </div>
+            <button
+              onClick={() => setActiveRole('clinician')}
+              style={{
+                padding: '6px 14px',
+                borderRadius: 'var(--radius)',
+                border: '1px solid var(--bds)',
+                backgroundColor: 'var(--panel)',
+                color: 'var(--acc)',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              Switch to Clinician Mode
+            </button>
+          </Panel>
+        )}
 
         {/* RIGHT column (flex column, gap 10px, min-width 0) */}
         <div
@@ -165,15 +244,31 @@ export const ResultsPage: React.FC = () => {
               padding: '12px 14px',
             } as React.CSSProperties}
           >
-            <span
-              style={{
-                fontFamily: 'var(--fs)',
-                fontSize: '12px',
-                color: 'var(--mut)',
-              }}
-            >
-              Coronary artery disease
-            </span>
+            <div className="flex items-center justify-between">
+              <span
+                style={{
+                  fontFamily: 'var(--fs)',
+                  fontSize: '12px',
+                  color: 'var(--mut)',
+                }}
+              >
+                Overall Perfusion Adequacy Index
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--fs)',
+                  fontSize: '10px',
+                  padding: '2px 6px',
+                  borderRadius: '3px',
+                  backgroundColor: 'var(--hov)',
+                  color: 'var(--mut)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                Prototype Decision Support
+              </span>
+            </div>
 
             <div
               style={{

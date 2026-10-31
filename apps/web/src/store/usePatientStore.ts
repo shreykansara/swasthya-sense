@@ -13,6 +13,7 @@ import type {
   RiskTier,
   TargetVessel,
   VesselExplanation,
+  AppRole,
 } from '../types/clinical';
 
 // Clinical Sample Profiles
@@ -282,8 +283,10 @@ interface PatientStore {
   error: string | null;
   disclaimerAccepted: boolean;
   offlineMode: boolean;
+  activeRole: AppRole;
 
   // Actions
+  setActiveRole: (role: AppRole) => void;
   setPatient: (patient: PatientData) => void;
   updatePatientField: <K extends keyof PatientData>(key: K, value: PatientData[K]) => void;
   updateField: <K extends keyof PatientData>(key: K, value: PatientData[K]) => void;
@@ -314,6 +317,9 @@ export const usePatientStore = create<PatientStore>((set, get) => ({
   error: null,
   disclaimerAccepted: false,
   offlineMode: false,
+  activeRole: 'clinician',
+
+  setActiveRole: (activeRole) => set({ activeRole }),
 
   setPatient: (patient) => {
     if (debounceTimer) {
@@ -849,7 +855,7 @@ function generateLocalSimulation(p: PatientData): CompleteAnalysisResponse {
           {
             feature_name: 'DM',
             clinical_label: 'Diabetes Mellitus',
-            feature_value: p.DM === '1' ? 'Diagnosed' : 'Negative',
+            feature_value: p.DM === '1' ? 'Documented' : 'Negative',
             shap_value: p.DM === '1' ? 0.24 : -0.08,
             impact: p.DM === '1' ? 'INCREASES_RISK' : 'DECREASES_RISK',
             absolute_importance: p.DM === '1' ? 0.24 : 0.08,
