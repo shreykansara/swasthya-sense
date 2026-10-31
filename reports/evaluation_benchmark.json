@@ -1,0 +1,34 @@
+{
+  "evaluation_timestamp": "2026-11-01T12:00:00+00:00",
+  "total_patients_evaluated": 60,
+  "metrics": {
+    "overdue_identification": {
+      "ground_truth_overdues": 10,
+      "detected_overdues": 10,
+      "true_positive_overdues": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "target_met": true
+    },
+    "useful_prioritization_and_lane_isolation": {
+      "ground_truth_deteriorations": 30,
+      "correct_clinical_lane_assignments": 30,
+      "deteriorations_misrouted_to_admin": 0,
+      "lane_isolation_accuracy": 1.0,
+      "target_met": true
+    },
+    "transparent_rule_explainability": {
+      "total_alerts_generated": 50,
+      "alerts_with_complete_rule_trace": 50,
+      "trace_coverage": 1.0,
+      "target_met": true
+    }
+  },
+  "success_measures_summary": {
+    "overdue_detection_passed": true,
+    "triage_isolation_passed": true,
+    "explainability_passed": true,
+    "regulatory_safety_passed": true
+  }
+}

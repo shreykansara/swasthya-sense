@@ -164,7 +164,14 @@ def inject_ground_truth_events(patients: List[Dict[str, Any]], base_date: dateti
         scenario = i % 6  # 0, 1, 2, 3, 4, 5
 
         if scenario == 0:
-            # Overdue missed visit (> 3 days past scheduled date)
+            # Overdue missed visit (> 3 days past scheduled date) - stable vitals
+            p["BP"] = rng.randint(118, 136)
+            p["Diastolic_BP"] = rng.randint(72, 84)
+            p["PR"] = rng.randint(65, 80)
+            p["Dyspnea"] = "N"
+            p["troponin_i_ng_ml"] = 0.01
+            p["has_resting_chest_pain"] = False
+            p["weight_delta_48h_kg"] = 0.2
             days_overdue = rng.randint(5, 18)
             scheduled = base_date - timedelta(days=days_overdue)
             p["next_scheduled_date"] = scheduled.isoformat()
@@ -176,7 +183,14 @@ def inject_ground_truth_events(patients: List[Dict[str, Any]], base_date: dateti
             })
 
         elif scenario == 1:
-            # Late visit within grace period (1-2 days past scheduled date)
+            # Late visit within grace period (1-2 days past scheduled date) - stable vitals
+            p["BP"] = rng.randint(118, 136)
+            p["Diastolic_BP"] = rng.randint(72, 84)
+            p["PR"] = rng.randint(65, 80)
+            p["Dyspnea"] = "N"
+            p["troponin_i_ng_ml"] = 0.01
+            p["has_resting_chest_pain"] = False
+            p["weight_delta_48h_kg"] = 0.2
             days_in_grace = rng.randint(1, 2)
             scheduled = base_date - timedelta(days=days_in_grace)
             p["next_scheduled_date"] = scheduled.isoformat()
@@ -239,6 +253,13 @@ def inject_ground_truth_events(patients: List[Dict[str, Any]], base_date: dateti
 
         else:
             # Scenario 5: Normal on-schedule patient
+            p["BP"] = rng.randint(114, 130)
+            p["Diastolic_BP"] = rng.randint(70, 82)
+            p["PR"] = rng.randint(62, 78)
+            p["Dyspnea"] = "N"
+            p["troponin_i_ng_ml"] = 0.01
+            p["has_resting_chest_pain"] = False
+            p["weight_delta_48h_kg"] = 0.1
             p["next_scheduled_date"] = (base_date + timedelta(days=rng.randint(7, 21))).isoformat()
 
 

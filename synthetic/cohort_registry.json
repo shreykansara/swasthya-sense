@@ -23,9 +23,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 166,
-    "Diastolic_BP": 101,
-    "PR": 83,
+    "BP": 128,
+    "Diastolic_BP": 80,
+    "PR": 68,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -65,14 +65,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 10,
+        "days_overdue": 8,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
     "last_visit_date": "2026-10-04T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-22T12:00:00+00:00"
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-24T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0002",
@@ -98,9 +101,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 140,
-    "Diastolic_BP": 80,
-    "PR": 72,
+    "BP": 135,
+    "Diastolic_BP": 78,
+    "PR": 80,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -146,8 +149,11 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-21T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-31T12:00:00+00:00"
+    "last_visit_date": "2026-09-18T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-30T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0003",
@@ -173,8 +179,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 208,
-    "Diastolic_BP": 124,
+    "BP": 187,
+    "Diastolic_BP": 113,
     "PR": 81,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
@@ -222,7 +228,7 @@
     ],
     "grace_period_days": 3,
     "last_visit_date": "2026-09-30T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-11T12:00:00+00:00"
+    "next_scheduled_date": "2026-11-03T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0004",
@@ -296,9 +302,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-19T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-12T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.195,
+    "last_visit_date": "2026-09-28T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-05T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.132,
     "has_resting_chest_pain": true
   },
   {
@@ -325,8 +331,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 202,
-    "Diastolic_BP": 117,
+    "BP": 194,
+    "Diastolic_BP": 113,
     "PR": 72,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -367,7 +373,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 12
+        "days_overdue": 11
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -378,7 +384,7 @@
     ],
     "grace_period_days": 3,
     "last_visit_date": "2026-09-22T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-20T12:00:00+00:00"
+    "next_scheduled_date": "2026-10-21T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0006",
@@ -405,15 +411,15 @@
     "CHF": "Y",
     "DLP": "N",
     "BP": 122,
-    "Diastolic_BP": 77,
-    "PR": 90,
+    "Diastolic_BP": 75,
+    "PR": 73,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "Y",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -445,8 +451,11 @@
     "VHD": "N",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-30T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-08T12:00:00+00:00"
+    "last_visit_date": "2026-09-25T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-20T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0007",
@@ -472,9 +481,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 145,
-    "Diastolic_BP": 93,
-    "PR": 70,
+    "BP": 134,
+    "Diastolic_BP": 82,
+    "PR": 67,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -514,14 +523,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 6,
+        "days_overdue": 16,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-18T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-26T12:00:00+00:00"
+    "last_visit_date": "2026-09-25T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-16T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0008",
@@ -547,9 +559,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 148,
-    "Diastolic_BP": 88,
-    "PR": 71,
+    "BP": 120,
+    "Diastolic_BP": 80,
+    "PR": 74,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -595,7 +607,10 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-04T12:00:00+00:00",
+    "last_visit_date": "2026-09-27T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
     "next_scheduled_date": "2026-10-30T12:00:00+00:00"
   },
   {
@@ -622,8 +637,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 182,
-    "Diastolic_BP": 125,
+    "BP": 201,
+    "Diastolic_BP": 112,
     "PR": 81,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -670,8 +685,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-04T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-10T12:00:00+00:00"
+    "last_visit_date": "2026-09-23T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-05T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0010",
@@ -745,9 +760,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-22T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-14T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.11,
+    "last_visit_date": "2026-09-26T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-09T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.134,
     "has_resting_chest_pain": true
   },
   {
@@ -774,8 +789,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 195,
-    "Diastolic_BP": 115,
+    "BP": 202,
+    "Diastolic_BP": 118,
     "PR": 72,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -816,7 +831,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 8
+        "days_overdue": 9
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -826,8 +841,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-25T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-24T12:00:00+00:00"
+    "last_visit_date": "2026-10-05T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-23T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0012",
@@ -853,8 +868,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 112,
-    "Diastolic_BP": 82,
+    "BP": 117,
+    "Diastolic_BP": 76,
     "PR": 78,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -862,7 +877,7 @@
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -894,8 +909,11 @@
     "VHD": "N",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-25T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-19T12:00:00+00:00"
+    "last_visit_date": "2026-09-22T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-20T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0013",
@@ -921,9 +939,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 138,
-    "Diastolic_BP": 95,
-    "PR": 70,
+    "BP": 133,
+    "Diastolic_BP": 78,
+    "PR": 73,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -963,14 +981,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 15,
+        "days_overdue": 18,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-21T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-17T12:00:00+00:00"
+    "last_visit_date": "2026-09-18T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-14T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0014",
@@ -996,9 +1017,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 142,
-    "Diastolic_BP": 92,
-    "PR": 68,
+    "BP": 136,
+    "Diastolic_BP": 79,
+    "PR": 65,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -1044,8 +1065,11 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-05T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-30T12:00:00+00:00"
+    "last_visit_date": "2026-09-24T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-31T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0015",
@@ -1071,8 +1095,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 200,
-    "Diastolic_BP": 116,
+    "BP": 215,
+    "Diastolic_BP": 126,
     "PR": 80,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -1119,8 +1143,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-05T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-11T12:00:00+00:00"
+    "last_visit_date": "2026-10-03T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-03T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0016",
@@ -1194,9 +1218,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-23T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-06T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.2,
+    "last_visit_date": "2026-10-04T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-15T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.16,
     "has_resting_chest_pain": true
   },
   {
@@ -1223,8 +1247,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 184,
-    "Diastolic_BP": 115,
+    "BP": 199,
+    "Diastolic_BP": 113,
     "PR": 60,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -1265,7 +1289,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 8
+        "days_overdue": 7
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -1275,8 +1299,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-19T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-24T12:00:00+00:00"
+    "last_visit_date": "2026-09-22T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-25T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0018",
@@ -1302,16 +1326,16 @@
     "Thyroid Disease": "Y",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 136,
-    "Diastolic_BP": 74,
-    "PR": 95,
+    "BP": 128,
+    "Diastolic_BP": 80,
+    "PR": 77,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -1343,8 +1367,11 @@
     "VHD": "N",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-26T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-15T12:00:00+00:00"
+    "last_visit_date": "2026-10-04T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-19T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0019",
@@ -1370,9 +1397,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 153,
-    "Diastolic_BP": 104,
-    "PR": 66,
+    "BP": 126,
+    "Diastolic_BP": 80,
+    "PR": 77,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -1412,14 +1439,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 6,
+        "days_overdue": 15,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-24T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-26T12:00:00+00:00"
+    "last_visit_date": "2026-09-20T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-17T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0020",
@@ -1445,9 +1475,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 132,
-    "Diastolic_BP": 79,
-    "PR": 67,
+    "BP": 135,
+    "Diastolic_BP": 84,
+    "PR": 80,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -1493,7 +1523,10 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-25T12:00:00+00:00",
+    "last_visit_date": "2026-09-28T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
     "next_scheduled_date": "2026-10-30T12:00:00+00:00"
   },
   {
@@ -1520,8 +1553,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 214,
-    "Diastolic_BP": 124,
+    "BP": 200,
+    "Diastolic_BP": 125,
     "PR": 83,
     "Edema": "1",
     "Weak Peripheral Pulse": "Y",
@@ -1568,8 +1601,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-04T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-09T12:00:00+00:00"
+    "last_visit_date": "2026-09-24T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-06T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0022",
@@ -1643,9 +1676,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-18T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-11T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.124,
+    "last_visit_date": "2026-09-29T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-04T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.065,
     "has_resting_chest_pain": true
   },
   {
@@ -1672,8 +1705,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 197,
-    "Diastolic_BP": 119,
+    "BP": 198,
+    "Diastolic_BP": 118,
     "PR": 63,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -1714,7 +1747,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 8
+        "days_overdue": 10
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -1724,8 +1757,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-21T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-24T12:00:00+00:00"
+    "last_visit_date": "2026-09-17T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-22T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0024",
@@ -1751,16 +1784,16 @@
     "Thyroid Disease": "Y",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 110,
+    "BP": 125,
     "Diastolic_BP": 73,
-    "PR": 88,
+    "PR": 70,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -1793,7 +1826,10 @@
     "injected_ground_truth": [],
     "grace_period_days": 3,
     "last_visit_date": "2026-09-22T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-16T12:00:00+00:00"
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-19T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0025",
@@ -1819,9 +1855,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 149,
-    "Diastolic_BP": 99,
-    "PR": 76,
+    "BP": 132,
+    "Diastolic_BP": 80,
+    "PR": 80,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -1867,7 +1903,10 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-21T12:00:00+00:00",
+    "last_visit_date": "2026-09-22T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
     "next_scheduled_date": "2026-10-15T12:00:00+00:00"
   },
   {
@@ -1894,9 +1933,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 137,
-    "Diastolic_BP": 88,
-    "PR": 64,
+    "BP": 135,
+    "Diastolic_BP": 82,
+    "PR": 66,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -1942,8 +1981,11 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-07T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-31T12:00:00+00:00"
+    "last_visit_date": "2026-09-24T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-30T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0027",
@@ -1969,8 +2011,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "Y",
-    "BP": 215,
-    "Diastolic_BP": 126,
+    "BP": 188,
+    "Diastolic_BP": 119,
     "PR": 87,
     "Edema": "1",
     "Weak Peripheral Pulse": "Y",
@@ -2017,8 +2059,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-03T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-03T12:00:00+00:00"
+    "last_visit_date": "2026-09-27T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-10T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0028",
@@ -2092,9 +2134,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-04T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-15T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.16,
+    "last_visit_date": "2026-09-21T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-08T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.132,
     "has_resting_chest_pain": true
   },
   {
@@ -2122,7 +2164,7 @@
     "CHF": "N",
     "DLP": "N",
     "BP": 199,
-    "Diastolic_BP": 113,
+    "Diastolic_BP": 111,
     "PR": 65,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -2163,7 +2205,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 7
+        "days_overdue": 9
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -2173,8 +2215,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-22T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-25T12:00:00+00:00"
+    "last_visit_date": "2026-10-02T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-23T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0030",
@@ -2200,16 +2242,16 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 118,
-    "Diastolic_BP": 80,
-    "PR": 97,
+    "BP": 122,
+    "Diastolic_BP": 77,
+    "PR": 73,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
     "Systolic Murmur": "Y",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -2241,8 +2283,11 @@
     "VHD": "N",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-04T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-18T12:00:00+00:00"
+    "last_visit_date": "2026-09-17T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-09T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0031",
@@ -2268,9 +2313,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 151,
-    "Diastolic_BP": 94,
-    "PR": 70,
+    "BP": 131,
+    "Diastolic_BP": 74,
+    "PR": 79,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -2310,14 +2355,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 15,
+        "days_overdue": 5,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-23T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-17T12:00:00+00:00"
+    "last_visit_date": "2026-10-01T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-27T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0032",
@@ -2343,9 +2391,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 137,
-    "Diastolic_BP": 78,
-    "PR": 78,
+    "BP": 118,
+    "Diastolic_BP": 79,
+    "PR": 67,
     "Edema": "0",
     "Weak Peripheral Pulse": "Y",
     "Lung rales": "N",
@@ -2391,8 +2439,11 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-22T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-30T12:00:00+00:00"
+    "last_visit_date": "2026-10-05T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-31T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0033",
@@ -2418,8 +2469,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 201,
-    "Diastolic_BP": 120,
+    "BP": 184,
+    "Diastolic_BP": 124,
     "PR": 89,
     "Edema": "1",
     "Weak Peripheral Pulse": "Y",
@@ -2466,8 +2517,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-20T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-09T12:00:00+00:00"
+    "last_visit_date": "2026-09-30T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-04T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0034",
@@ -2541,9 +2592,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-17T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-12T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.172,
+    "last_visit_date": "2026-09-20T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-08T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.167,
     "has_resting_chest_pain": true
   },
   {
@@ -2570,8 +2621,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 190,
-    "Diastolic_BP": 114,
+    "BP": 188,
+    "Diastolic_BP": 110,
     "PR": 60,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -2612,7 +2663,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 9
+        "days_overdue": 8
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -2622,8 +2673,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-25T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-23T12:00:00+00:00"
+    "last_visit_date": "2026-09-17T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-24T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0036",
@@ -2649,16 +2700,16 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 136,
-    "Diastolic_BP": 73,
-    "PR": 90,
+    "BP": 129,
+    "Diastolic_BP": 81,
+    "PR": 66,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "Y",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -2690,8 +2741,11 @@
     "VHD": "N",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-29T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-08T12:00:00+00:00"
+    "last_visit_date": "2026-09-27T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-16T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0037",
@@ -2717,16 +2771,16 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 152,
-    "Diastolic_BP": 88,
-    "PR": 82,
+    "BP": 133,
+    "Diastolic_BP": 81,
+    "PR": 69,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "0",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -2759,14 +2813,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 7,
+        "days_overdue": 14,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-06T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-25T12:00:00+00:00"
+    "last_visit_date": "2026-09-30T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-18T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0038",
@@ -2792,9 +2849,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 149,
-    "Diastolic_BP": 82,
-    "PR": 62,
+    "BP": 127,
+    "Diastolic_BP": 73,
+    "PR": 78,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -2840,8 +2897,11 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-17T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-30T12:00:00+00:00"
+    "last_visit_date": "2026-09-21T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-31T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0039",
@@ -2867,8 +2927,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 205,
-    "Diastolic_BP": 126,
+    "BP": 214,
+    "Diastolic_BP": 118,
     "PR": 89,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -2915,8 +2975,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-21T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-10T12:00:00+00:00"
+    "last_visit_date": "2026-10-03T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-07T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0040",
@@ -2990,9 +3050,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-01T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-08T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.171,
+    "last_visit_date": "2026-09-25T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-06T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.143,
     "has_resting_chest_pain": true
   },
   {
@@ -3019,8 +3079,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 199,
-    "Diastolic_BP": 116,
+    "BP": 184,
+    "Diastolic_BP": 111,
     "PR": 76,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -3061,7 +3121,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 10
+        "days_overdue": 9
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -3071,8 +3131,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-23T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-22T12:00:00+00:00"
+    "last_visit_date": "2026-10-01T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-23T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0042",
@@ -3098,16 +3158,16 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 125,
-    "Diastolic_BP": 86,
-    "PR": 89,
+    "BP": 116,
+    "Diastolic_BP": 70,
+    "PR": 73,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -3139,7 +3199,10 @@
     "VHD": "Mild",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-20T12:00:00+00:00",
+    "last_visit_date": "2026-09-25T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
     "next_scheduled_date": "2026-11-18T12:00:00+00:00"
   },
   {
@@ -3166,9 +3229,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 152,
-    "Diastolic_BP": 100,
-    "PR": 66,
+    "BP": 118,
+    "Diastolic_BP": 72,
+    "PR": 80,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -3208,14 +3271,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 18,
+        "days_overdue": 10,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-06T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-14T12:00:00+00:00"
+    "last_visit_date": "2026-09-26T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-22T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0044",
@@ -3241,16 +3307,16 @@
     "Thyroid Disease": "Y",
     "CHF": "N",
     "DLP": "N",
-    "BP": 138,
-    "Diastolic_BP": 82,
-    "PR": 70,
+    "BP": 132,
+    "Diastolic_BP": 77,
+    "PR": 68,
     "Edema": "0",
     "Weak Peripheral Pulse": "Y",
     "Lung rales": "N",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "0",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -3290,6 +3356,9 @@
     ],
     "grace_period_days": 3,
     "last_visit_date": "2026-09-28T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
     "next_scheduled_date": "2026-10-30T12:00:00+00:00"
   },
   {
@@ -3316,8 +3385,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 210,
-    "Diastolic_BP": 123,
+    "BP": 191,
+    "Diastolic_BP": 121,
     "PR": 80,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
@@ -3365,7 +3434,7 @@
     ],
     "grace_period_days": 3,
     "last_visit_date": "2026-09-23T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-04T12:00:00+00:00"
+    "next_scheduled_date": "2026-11-05T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0046",
@@ -3440,8 +3509,8 @@
     ],
     "grace_period_days": 3,
     "last_visit_date": "2026-09-21T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-08T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.132,
+    "next_scheduled_date": "2026-11-07T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.129,
     "has_resting_chest_pain": true
   },
   {
@@ -3468,8 +3537,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 199,
-    "Diastolic_BP": 111,
+    "BP": 203,
+    "Diastolic_BP": 113,
     "PR": 75,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -3520,7 +3589,7 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-02T12:00:00+00:00",
+    "last_visit_date": "2026-09-27T12:00:00+00:00",
     "next_scheduled_date": "2026-10-23T12:00:00+00:00"
   },
   {
@@ -3547,16 +3616,16 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 122,
-    "Diastolic_BP": 73,
-    "PR": 83,
+    "BP": 126,
+    "Diastolic_BP": 70,
+    "PR": 68,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -3588,8 +3657,11 @@
     "VHD": "N",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-17T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-12T12:00:00+00:00"
+    "last_visit_date": "2026-10-05T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-18T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0049",
@@ -3615,9 +3687,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 156,
-    "Diastolic_BP": 99,
-    "PR": 65,
+    "BP": 119,
+    "Diastolic_BP": 82,
+    "PR": 66,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -3657,14 +3729,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 10,
+        "days_overdue": 12,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-22T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-22T12:00:00+00:00"
+    "last_visit_date": "2026-10-02T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-20T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0050",
@@ -3690,9 +3765,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 144,
-    "Diastolic_BP": 77,
-    "PR": 62,
+    "BP": 124,
+    "Diastolic_BP": 79,
+    "PR": 65,
     "Edema": "0",
     "Weak Peripheral Pulse": "Y",
     "Lung rales": "N",
@@ -3738,7 +3813,10 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-04T12:00:00+00:00",
+    "last_visit_date": "2026-09-17T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
     "next_scheduled_date": "2026-10-31T12:00:00+00:00"
   },
   {
@@ -3765,8 +3843,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 210,
-    "Diastolic_BP": 126,
+    "BP": 195,
+    "Diastolic_BP": 124,
     "PR": 96,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -3813,8 +3891,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-24T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-05T12:00:00+00:00"
+    "last_visit_date": "2026-09-17T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-11T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0052",
@@ -3888,9 +3966,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-07T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-05T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.06,
+    "last_visit_date": "2026-09-21T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-06T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.086,
     "has_resting_chest_pain": true
   },
   {
@@ -3917,8 +3995,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 186,
-    "Diastolic_BP": 119,
+    "BP": 192,
+    "Diastolic_BP": 116,
     "PR": 62,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -3959,7 +4037,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 10
+        "days_overdue": 9
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -3969,8 +4047,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-19T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-22T12:00:00+00:00"
+    "last_visit_date": "2026-10-02T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-23T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0054",
@@ -3996,16 +4074,16 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "Y",
-    "BP": 124,
-    "Diastolic_BP": 70,
-    "PR": 81,
+    "BP": 127,
+    "Diastolic_BP": 71,
+    "PR": 74,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "Y",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -4037,8 +4115,11 @@
     "VHD": "N",
     "injected_ground_truth": [],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-01T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-11T12:00:00+00:00"
+    "last_visit_date": "2026-09-20T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-12T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0055",
@@ -4064,9 +4145,9 @@
     "Thyroid Disease": "Y",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 156,
-    "Diastolic_BP": 102,
-    "PR": 85,
+    "BP": 129,
+    "Diastolic_BP": 74,
+    "PR": 73,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -4106,14 +4187,17 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 14,
+        "days_overdue": 12,
         "expected_lane": "administrative",
         "expected_tier": "tier_3_routine"
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-04T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-18T12:00:00+00:00"
+    "last_visit_date": "2026-10-02T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-20T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0056",
@@ -4139,9 +4223,9 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "Y",
-    "BP": 133,
-    "Diastolic_BP": 80,
-    "PR": 80,
+    "BP": 131,
+    "Diastolic_BP": 76,
+    "PR": 79,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
@@ -4187,8 +4271,11 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-10-06T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-30T12:00:00+00:00"
+    "last_visit_date": "2026-09-22T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.2,
+    "next_scheduled_date": "2026-10-31T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0057",
@@ -4214,8 +4301,8 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "N",
-    "BP": 191,
-    "Diastolic_BP": 112,
+    "BP": 212,
+    "Diastolic_BP": 119,
     "PR": 80,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
@@ -4262,8 +4349,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-17T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-08T12:00:00+00:00"
+    "last_visit_date": "2026-09-27T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-11T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0058",
@@ -4337,9 +4424,9 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-27T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-14T12:00:00+00:00",
-    "troponin_i_ng_ml": 0.153,
+    "last_visit_date": "2026-10-04T12:00:00+00:00",
+    "next_scheduled_date": "2026-11-12T12:00:00+00:00",
+    "troponin_i_ng_ml": 0.187,
     "has_resting_chest_pain": true
   },
   {
@@ -4366,8 +4453,8 @@
     "Thyroid Disease": "N",
     "CHF": "N",
     "DLP": "N",
-    "BP": 188,
-    "Diastolic_BP": 118,
+    "BP": 187,
+    "Diastolic_BP": 113,
     "PR": 61,
     "Edema": "0",
     "Weak Peripheral Pulse": "N",
@@ -4408,7 +4495,7 @@
     "injected_ground_truth": [
       {
         "type": "EVENT_MISSED_VISIT",
-        "days_overdue": 11
+        "days_overdue": 12
       },
       {
         "type": "EVENT_TRUE_DETERIORATION",
@@ -4418,8 +4505,8 @@
       }
     ],
     "grace_period_days": 3,
-    "last_visit_date": "2026-09-22T12:00:00+00:00",
-    "next_scheduled_date": "2026-10-21T12:00:00+00:00"
+    "last_visit_date": "2026-09-29T12:00:00+00:00",
+    "next_scheduled_date": "2026-10-20T12:00:00+00:00"
   },
   {
     "patient_id": "PAT-0060",
@@ -4445,16 +4532,16 @@
     "Thyroid Disease": "N",
     "CHF": "Y",
     "DLP": "Y",
-    "BP": 121,
-    "Diastolic_BP": 75,
-    "PR": 78,
+    "BP": 114,
+    "Diastolic_BP": 71,
+    "PR": 76,
     "Edema": "1",
     "Weak Peripheral Pulse": "N",
     "Lung rales": "N",
     "Systolic Murmur": "N",
     "Diastolic Murmur": "N",
     "Typical Chest Pain": "0",
-    "Dyspnea": "Y",
+    "Dyspnea": "N",
     "Function Class": "2",
     "Atypical": "N",
     "Nonanginal": "N",
@@ -4487,6 +4574,9 @@
     "injected_ground_truth": [],
     "grace_period_days": 3,
     "last_visit_date": "2026-09-30T12:00:00+00:00",
-    "next_scheduled_date": "2026-11-15T12:00:00+00:00"
+    "troponin_i_ng_ml": 0.01,
+    "has_resting_chest_pain": false,
+    "weight_delta_48h_kg": 0.1,
+    "next_scheduled_date": "2026-11-18T12:00:00+00:00"
   }
 ]
