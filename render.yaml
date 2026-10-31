@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: swasthya-sense-app
+    env: docker
+    dockerfilePath: apps/api/Dockerfile
+    plan: free
+    region: oregon
+    autoDeploy: true
+    healthCheckPath: /health

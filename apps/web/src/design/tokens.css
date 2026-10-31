@@ -1,0 +1,193 @@
+/* Design Tokens
+ * Light ("Paper") & Dark ("Monitor") themes
+ * Mobile-first high-contrast healthcare HUD
+ */
+
+:root {
+  /* Fonts */
+  --fs: 'Sora', system-ui, -apple-system, sans-serif;
+  --fm: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Theme-independent layout & focus tokens */
+  --radius: 4px;
+  --focus: 2px solid var(--acc);
+  --focus-offset: 1px;
+  --s-black: #000000;
+
+  /* Motion tokens */
+  --ease-wipe: cubic-bezier(.3,0,.2,1);
+  --ease-draw: cubic-bezier(.4,0,.2,1);
+  --stagger: 110ms;
+
+  /* Button sizing tokens (large tap targets for mobile >= 44px) */
+  --btn-sm: 36px;
+  --btn-md: 44px;
+  --btn-lg: 48px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --btn-sm: 44px;
+    --btn-md: 44px;
+  }
+}
+
+/* Panel base class */
+.pn {
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: none;
+}
+
+/* Responsive grid */
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .field-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* LIGHT ("Paper") */
+:root[data-theme="light"],
+[data-theme="light"] {
+  color-scheme: light;
+  --page: #F8F9FA;
+  --gmin: #E9ECEF;
+  --gmaj: #DEE2E6;
+  --panel: #FFFFFF;
+  --ink: #1A1F2C;
+  --mut: #64748B;
+  --acc: #0F52BA;
+  --acc-hover: #0A3C87;
+  --acc-press: #072B60;
+  --onacc: #FFFFFF;
+  --bd: #E2E8F0;
+  --bds: #94A3B8;
+  --hov: #F1F5F9;
+  --band-alt: #F8FAFC;
+  --low: #15803D;
+  --mod: #B45309;
+  --high: #B91C1C;
+  --sheet: #FFFFFF;
+  --sheetink: #1A1F2C;
+  --sheetmut: #64748B;
+  --sbd: #E2E8F0;
+  --nav-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* DARK ("Monitor") */
+:root[data-theme="dark"],
+:root:not([data-theme="light"]),
+[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0B111A;
+  --gmin: #121B27;
+  --gmaj: #1A2636;
+  --panel: #111B27;
+  --ink: #E2E8F0;
+  --mut: #8E9BAE;
+  --acc: #38BDF8;
+  --acc-hover: #7DD3FC;
+  --acc-press: #BAE6FD;
+  --onacc: #082F49;
+  --bd: #1E2E42;
+  --bds: #334A68;
+  --hov: #162436;
+  --band-alt: #131E2C;
+  --low: #22C55E;
+  --mod: #F59E0B;
+  --high: #EF4444;
+  --sheet: #FFFFFF;
+  --sheetink: #1A1F2C;
+  --sheetmut: #64748B;
+  --sbd: #E2E8F0;
+  --nav-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Typography Scale */
+.type-body {
+  font-family: var(--fs);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.type-page-title {
+  font-family: var(--fs);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.type-section-heading {
+  font-family: var(--fs);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.type-label {
+  font-family: var(--fs);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mut);
+}
+
+.type-caption {
+  font-family: var(--fs);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--mut);
+}
+
+.type-button {
+  font-family: var(--fs);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.type-result-num {
+  font-family: var(--fm);
+  font-size: 36px;
+  line-height: 1.1;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.type-metric-num {
+  font-family: var(--fm);
+  font-size: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.type-input-val {
+  font-family: var(--fm);
+  font-size: 14px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.type-table-num {
+  font-family: var(--fm);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}

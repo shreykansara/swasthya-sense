@@ -17,3 +17,4 @@
 - **Context:** Tesseract installed to `C:\Users\Shrey\AppData\Local\Programs\Tesseract-OCR\` (user-local install via winget).
 - **Decision:** Set `TESSERACT_CMD` in `.env.example` to the common `C:\Program Files\Tesseract-OCR\tesseract.exe` path as a default, document the actual path in README.
 - **Rationale:** Different machines may install to different locations.
+
