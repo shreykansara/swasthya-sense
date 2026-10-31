@@ -170,3 +170,4 @@ create policy "Patient can view own reports"
       where id = auth.uid() and role = 'patient' and profiles.patient_id = reports.patient_id
     )
   );
+

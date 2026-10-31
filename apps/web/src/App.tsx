@@ -5,7 +5,7 @@
  */
 
 import React, { Suspense, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { WizardLayout } from './components/layout/WizardLayout';
 import { LandingLayout } from './components/layout/LandingLayout';
 
@@ -25,26 +25,72 @@ import { ModelInfoPage } from './pages/ModelInfoPage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
 
 import { useAuthStore } from './store/useAuthStore';
+import { UserRole } from './lib/supabase';
 
 // Lazy-loaded views
 const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 const ResultsPage = React.lazy(() => import('./pages/ResultsPage'));
 
 /**
- * Route guard dispatching root view based on active Persona:
- * - Patient -> PatientPortalPage
- * - Lab Tech -> LabIntakePage
- * - Doctor -> ClinicalWorklistPage
+ * Route dispatcher routing root `/` view based on authenticated Persona:
+ * - Unauthenticated -> /login
+ * - Patient -> /patient-portal
+ * - Lab Tech -> /lab-intake
+ * - Doctor -> /dashboard
  */
 const RootRoleDispatcher: React.FC = () => {
-  const user = useAuthStore((s) => s.user);
-  if (user?.role === 'patient') {
-    return <PatientPortalPage />;
+  const { user, isAuthenticated, isLoading } = useAuthStore();
+  if (isLoading) {
+    return (
+      <div style={{ padding: '60px 20px', textAlign: 'center', fontFamily: 'var(--fs)', color: 'var(--mut)' }}>
+        Authenticating session...
+      </div>
+    );
   }
-  if (user?.role === 'lab_technician') {
-    return <LabIntakePage />;
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" replace />;
   }
-  return <ClinicalWorklistPage />;
+  if (user.role === 'patient') {
+    return <Navigate to="/patient-portal" replace />;
+  }
+  if (user.role === 'lab_technician') {
+    return <Navigate to="/lab-intake" replace />;
+  }
+  return <Navigate to="/dashboard" replace />;
+};
+
+/**
+ * Protected Route Wrapper enforcing authentication and role-based permissions
+ */
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  allowedRoles?: UserRole[];
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
+  const { user, isAuthenticated, isLoading } = useAuthStore();
+  const location = useLocation();
+
+  if (isLoading) {
+    return (
+      <div style={{ padding: '60px 20px', textAlign: 'center', fontFamily: 'var(--fs)', color: 'var(--mut)' }}>
+        Verifying authorization credentials...
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    // Redirect unauthorized persona to their own landing workspace
+    if (user.role === 'patient') return <Navigate to="/patient-portal" replace />;
+    if (user.role === 'lab_technician') return <Navigate to="/lab-intake" replace />;
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 export const App: React.FC = () => {
@@ -68,24 +114,61 @@ export const App: React.FC = () => {
           <Route element={<WizardLayout />}>
             {/* 1. Contextual Home Page Dispatcher according to Persona */}
             <Route path="/" element={<RootRoleDispatcher />} />
-            <Route path="/dashboard" element={<ClinicalWorklistPage />} />
 
-            {/* 2. Persona 2: The Patient Portal (Next Visit Date & Prescribed Practices) */}
-            <Route path="/patient-portal" element={<PatientPortalPage />} />
+            {/* 2. Doctor: Worklist Dashboard */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <ClinicalWorklistPage />
+                </ProtectedRoute>
+              }
+            />
 
-            {/* 3. Persona 3: The Lab Technician Desk (Only and only upload reports & upsert profiles) */}
-            <Route path="/lab-intake" element={<LabIntakePage />} />
+            {/* 3. Patient: Next Visit Date & Prescribed Practices */}
+            <Route
+              path="/patient-portal"
+              element={
+                <ProtectedRoute allowedRoles={['patient', 'doctor']}>
+                  <PatientPortalPage />
+                </ProtectedRoute>
+              }
+            />
 
-            {/* 4. Persona 1: The Doctor's Consultation Station & 3D Heart Twin */}
-            <Route path="/doctor-consultation" element={<DoctorConsultationPage />} />
+            {/* 4. Lab Tech: Ingest Reports & Upsert Records */}
+            <Route
+              path="/lab-intake"
+              element={
+                <ProtectedRoute allowedRoles={['lab_technician', 'doctor']}>
+                  <LabIntakePage />
+                </ProtectedRoute>
+              }
+            />
 
-            {/* 5. Supabase Login & Account Portal */}
+            {/* 5. Doctor: Consultation Station & 3D Heart Twin */}
+            <Route
+              path="/doctor-consultation"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <DoctorConsultationPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* 6. Supabase Login & Account Portal (Accessible by all) */}
             <Route path="/login" element={<AuthPage />} />
 
-            {/* 6. Audit Trail & Governance Log */}
-            <Route path="/audit" element={<AuditGovernancePage />} />
+            {/* 7. Audit Trail & Governance Log */}
+            <Route
+              path="/audit"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <AuditGovernancePage />
+                </ProtectedRoute>
+              }
+            />
 
-            {/* 7. Classic Stepper Views */}
+            {/* 8. Stepper Views */}
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/enter-data" element={<DataEntryPage />} />
             <Route path="/results" element={<ResultsPage />} />

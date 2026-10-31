@@ -1,6 +1,17 @@
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { Sun, Moon, Users, FileText, Stethoscope, ShieldCheck, Heart, LogOut, KeyRound } from 'lucide-react';
+import {
+  Sun,
+  Moon,
+  Users,
+  FileText,
+  Stethoscope,
+  ShieldCheck,
+  Heart,
+  LogOut,
+  KeyRound,
+  User as UserIcon,
+} from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuthStore } from '../../store/useAuthStore';
 import { UserRole } from '../../lib/supabase';
@@ -15,12 +26,15 @@ export const AppNav: React.FC<AppNavProps> = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { resolvedTheme, setTheme } = useTheme();
-  const { user, loginAsDemo, logout } = useAuthStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
 
-  const userRole: UserRole = user?.role || 'doctor';
+  const userRole: UserRole | null = user?.role || null;
 
   // Strict 3-Persona Role-Based Navigation Links
   const getNavLinks = () => {
+    if (!isAuthenticated || !userRole) {
+      return [];
+    }
     if (userRole === 'lab_technician') {
       // Lab Tech can ONLY and ONLY upload reports
       return [
@@ -43,15 +57,11 @@ export const AppNav: React.FC<AppNavProps> = () => {
 
   const navLinks = getNavLinks();
 
-  const handleRoleSwitch = (newRole: UserRole) => {
-    loginAsDemo(newRole);
-    if (newRole === 'doctor') {
-      navigate('/dashboard');
-    } else if (newRole === 'lab_technician') {
-      navigate('/lab-intake');
-    } else {
-      navigate('/patient-portal');
-    }
+  const getHomeRoute = () => {
+    if (!isAuthenticated || !userRole) return '/login';
+    if (userRole === 'patient') return '/patient-portal';
+    if (userRole === 'lab_technician') return '/lab-intake';
+    return '/dashboard';
   };
 
   return (
@@ -74,7 +84,7 @@ export const AppNav: React.FC<AppNavProps> = () => {
       >
         {/* Brand Left Zone */}
         <Link
-          to={userRole === 'patient' ? '/patient-portal' : userRole === 'lab_technician' ? '/lab-intake' : '/dashboard'}
+          to={getHomeRoute()}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -110,7 +120,7 @@ export const AppNav: React.FC<AppNavProps> = () => {
           </div>
         </Link>
 
-        {/* Center Navigation Links - STRICTLY RESTRICTED PER PERSONA */}
+        {/* Center Navigation Links - STRICTLY RESTRICTED PER AUTHENTICATED PERSONA */}
         <nav aria-label="Clinical Workspaces" style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
           {navLinks.map((tab) => {
             const Icon = tab.icon;
@@ -142,56 +152,84 @@ export const AppNav: React.FC<AppNavProps> = () => {
           })}
         </nav>
 
-        {/* Right Zone: 3-Persona Switcher, Profile Badge & Theme Toggle */}
+        {/* Right Zone: Authenticated Identity Badge, Logout / Login, & Theme Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {/* Persona Switcher Dropdown */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '11px', color: 'var(--mut)', fontFamily: 'var(--fs)' }}>Persona:</span>
-            <select
-              value={userRole}
-              onChange={(e) => handleRoleSwitch(e.target.value as UserRole)}
-              aria-label="Active Medical Persona"
+          {isAuthenticated && user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* Authenticated Identity Pill */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '4px 10px',
+                  backgroundColor: 'var(--hov)',
+                  border: '1px solid var(--bd)',
+                  borderRadius: 'var(--radius)',
+                  fontSize: '11px',
+                  fontFamily: 'var(--fs)',
+                }}
+              >
+                {user.role === 'doctor' && <Stethoscope size={13} color="var(--acc)" />}
+                {user.role === 'patient' && <Heart size={13} color="var(--low)" />}
+                {user.role === 'lab_technician' && <FileText size={13} color="var(--mod)" />}
+                <span style={{ fontWeight: 600, color: 'var(--ink)' }}>{user.full_name}</span>
+                <span style={{ color: 'var(--mut)', fontSize: '10px' }}>
+                  ({user.role === 'doctor' ? 'Clinician' : user.role === 'patient' ? (user.patient_id || 'Patient') : 'Lab Tech'})
+                </span>
+              </div>
+
+              {/* Sign Out Button */}
+              <button
+                type="button"
+                onClick={async () => {
+                  await logout();
+                  navigate('/login');
+                }}
+                title="Sign Out of Swasthya Sense"
+                style={{
+                  height: '32px',
+                  padding: '0 8px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  backgroundColor: 'transparent',
+                  border: '1px solid var(--bd)',
+                  borderRadius: 'var(--radius)',
+                  color: 'var(--mut)',
+                  fontSize: '11px',
+                  fontFamily: 'var(--fs)',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <LogOut size={13} />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              title="Sign In to Swasthya Sense"
               style={{
                 height: '32px',
-                padding: '0 8px',
-                backgroundColor: 'var(--panel)',
-                border: '1px solid var(--bds)',
+                padding: '0 12px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: 'var(--acc)',
+                color: '#ffffff',
                 borderRadius: 'var(--radius)',
-                color: 'var(--ink)',
-                fontFamily: 'var(--fs)',
-                fontSize: '11px',
+                textDecoration: 'none',
+                fontSize: '12px',
                 fontWeight: 600,
-                cursor: 'pointer',
+                fontFamily: 'var(--fs)',
               }}
             >
-              <option value="doctor">🩺 Doctor (Aditi Sharma)</option>
-              <option value="patient">👤 Patient (Ramesh Patel)</option>
-              <option value="lab_technician">🧪 Lab Tech (Rajesh Kumar)</option>
-            </select>
-          </div>
-
-          {/* Login / Auth Portal link */}
-          <Link
-            to="/login"
-            title="Open Supabase Login & Account Portal"
-            style={{
-              height: '32px',
-              padding: '0 8px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              backgroundColor: 'var(--hov)',
-              border: '1px solid var(--bd)',
-              borderRadius: 'var(--radius)',
-              color: 'var(--ink)',
-              textDecoration: 'none',
-              fontSize: '11px',
-              fontFamily: 'var(--fs)',
-            }}
-          >
-            <KeyRound size={13} />
-            <span>Auth</span>
-          </Link>
+              <KeyRound size={13} />
+              <span>Sign In</span>
+            </Link>
+          )}
 
           {/* Theme toggle */}
           <button

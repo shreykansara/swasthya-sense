@@ -73,10 +73,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     }
 
-    // Default to Doctor demo persona on initial fresh visit for seamless hackathon review
-    const defaultDoctor = DEMO_PROFILES.doctor;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultDoctor));
-    set({ user: defaultDoctor, isAuthenticated: true, isLoading: false });
+    // No active session found - prompt user to login or use demo credentials
+    set({ user: null, isAuthenticated: false, isLoading: false });
   },
 
   loginAsDemo: (role: UserRole, patientId?: string, fullName?: string) => {
@@ -234,3 +232,4 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ user: null, isAuthenticated: false });
   },
 }));
+

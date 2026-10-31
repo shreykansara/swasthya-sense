@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FileText,
-  Upload,
   Zap,
   CheckCircle2,
   AlertTriangle,
   ArrowRight,
   Send,
-  Heart,
-  Stethoscope,
-  Activity,
-  User,
-  Phone,
-  Building,
   RefreshCw,
   UserPlus,
+  ShieldCheck,
+  Building,
 } from 'lucide-react';
 import { swasthyaApi, StandardPreset, PatientRecord, DispatchedAlert } from '../api/swasthyaApi';
 import { useAuthStore } from '../store/useAuthStore';
@@ -28,12 +23,10 @@ export const LabIntakePage: React.FC = () => {
   const [presets, setPresets] = useState<StandardPreset[]>([]);
   const [existingPatients, setExistingPatients] = useState<PatientRecord[]>([]);
   const [selectedPresetId, setSelectedPresetId] = useState<string>('critical_lad_ischemia');
-  const [intakeMode, setIntakeMode] = useState<'new' | 'existing'>('existing');
-  const [selectedPatientId, setSelectedPatientId] = useState<string>('PAT-0001');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Form Fields
+  // Form Fields - patient_id is hospital assigned and part of standard report
   const [formData, setFormData] = useState<Record<string, any>>({
     patient_id: 'PAT-0001',
     full_name: 'Ramesh Patel',
@@ -85,54 +78,50 @@ export const LabIntakePage: React.FC = () => {
       setPresets(data);
     }).catch(console.warn);
 
-    // 2. Load existing patients for the upsert selector
+    // 2. Load existing patients for lookup & duplicate detection
     swasthyaApi.fetchPatients().then((data) => {
       setExistingPatients(data);
-      if (data.length > 0) {
-        setSelectedPatientId(data[0].patient_id);
-      }
     }).catch(console.warn);
   }, []);
 
+  // Set of existing patient IDs for real-time upsert status feedback
+  const existingPatientIds = useMemo(() => {
+    return new Set(existingPatients.map((p) => (p.patient_id || '').trim().toUpperCase()));
+  }, [existingPatients]);
+
+  const currentEnteredPid = (formData.patient_id || '').trim().toUpperCase();
+  const isExistingPatient = Boolean(currentEnteredPid && existingPatientIds.has(currentEnteredPid));
+
   const handleSelectPreset = (preset: StandardPreset) => {
     setSelectedPresetId(preset.preset_id);
+    const reportData = preset.report || {};
     setFormData((prev) => ({
       ...prev,
-      ...preset.report,
-      patient_id: intakeMode === 'existing' ? selectedPatientId : undefined,
+      ...reportData,
+      patient_id: reportData.patient_id || prev.patient_id,
     }));
     setUploadResult(null);
     setError(null);
   };
 
-  const handleExistingPatientChange = (pid: string) => {
-    setSelectedPatientId(pid);
-    const matched = existingPatients.find((p) => p.patient_id === pid);
-    if (matched) {
-      setFormData((prev) => ({
-        ...prev,
-        patient_id: matched.patient_id,
-        full_name: matched.full_name,
-        age: matched.Age || matched.age,
-        sex: matched.Sex || matched.sex,
-        phone: matched.phone || matched.masked_phone,
-        cohort: matched.cohort,
-        BP: matched.BP || 130,
-        Diastolic_BP: matched.Diastolic_BP || 80,
-        PR: matched.PR || 72,
-        FBS: matched.FBS || 100,
-        LDL: matched.LDL || 95,
-        TG: matched.TG || 120,
-        EF_TTE: matched.EF_TTE || matched['EF-TTE'] || 55,
-      }));
-    }
-  };
-
   const handleInputChange = (field: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setFormData((prev) => {
+      const updated = { ...prev, [field]: value };
+      // If typing a patient_id that matches an existing patient, pre-fill demographic defaults if blank
+      if (field === 'patient_id') {
+        const matched = existingPatients.find(
+          (p) => (p.patient_id || '').trim().toUpperCase() === String(value).trim().toUpperCase()
+        );
+        if (matched) {
+          updated.full_name = matched.full_name || prev.full_name;
+          updated.phone = matched.phone || matched.masked_phone || prev.phone;
+          updated.cohort = matched.cohort || prev.cohort;
+          if (matched.Age || matched.age) updated.age = matched.Age || matched.age;
+          if (matched.Sex || matched.sex) updated.sex = matched.Sex || matched.sex;
+        }
+      }
+      return updated;
+    });
   };
 
   const handleUploadReport = async (e: React.FormEvent) => {
@@ -140,12 +129,17 @@ export const LabIntakePage: React.FC = () => {
     setLoading(true);
     setError(null);
 
-    const payload = { ...formData };
-    if (intakeMode === 'new') {
-      delete payload.patient_id;
-    } else {
-      payload.patient_id = selectedPatientId;
+    const cleanPid = (formData.patient_id || '').trim();
+    if (!cleanPid) {
+      setError('Hospital Patient ID is required to process diagnostic report.');
+      setLoading(false);
+      return;
     }
+
+    const payload = {
+      ...formData,
+      patient_id: cleanPid,
+    };
 
     try {
       const res = await swasthyaApi.uploadReport(payload, user?.full_name || 'Rajesh Kumar (Sr. Lab Tech)');
@@ -156,10 +150,10 @@ export const LabIntakePage: React.FC = () => {
         dispatched_alert: res.dispatched_alert,
       });
 
-      // Refresh patients list so updated values reflect immediately
+      // Refresh registry so updated values reflect immediately
       swasthyaApi.fetchPatients().then(setExistingPatients).catch(console.warn);
     } catch (err: any) {
-      setError(err.message || 'Error uploading report and updating patient profile.');
+      setError(err.message || 'Error uploading report and updating patient record.');
     } finally {
       setLoading(false);
     }
@@ -206,85 +200,12 @@ export const LabIntakePage: React.FC = () => {
               color: 'var(--ink)',
             }}
           >
-            LAB TECHNICIAN DESK • STRICT REPORT INGESTION
+            STRICT REPORT INGESTION DESK
           </span>
         </div>
       </div>
 
-      {/* PATIENT IDENTIFICATION MODE SELECTOR (NEW VS EXISTING UPSERT) */}
-      <div
-        className="pn"
-        style={{
-          marginBottom: '20px',
-          backgroundColor: 'var(--panel)',
-          border: '1px solid var(--bd)',
-          padding: '16px',
-        }}
-      >
-        <div style={{ fontFamily: 'var(--fs)', fontSize: '13px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
-          Patient Target Identification:
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '14px' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--ink)', cursor: 'pointer' }}>
-            <input
-              type="radio"
-              name="intakeMode"
-              checked={intakeMode === 'existing'}
-              onChange={() => {
-                setIntakeMode('existing');
-                handleExistingPatientChange(selectedPatientId);
-              }}
-            />
-            <strong>Update Existing Patient</strong> (Report supersedes previous records)
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--ink)', cursor: 'pointer' }}>
-            <input
-              type="radio"
-              name="intakeMode"
-              checked={intakeMode === 'new'}
-              onChange={() => {
-                setIntakeMode('new');
-                setFormData((prev) => ({
-                  ...prev,
-                  patient_id: undefined,
-                  full_name: 'New Registered Patient',
-                  phone: '+91-98765-43210',
-                }));
-              }}
-            />
-            <strong>Create New Patient Profile</strong> (First-Time Diagnostic Visit)
-          </label>
-        </div>
-
-        {intakeMode === 'existing' && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <label style={{ fontSize: '12px', color: 'var(--mut)', minWidth: '150px' }}>Select Existing Patient:</label>
-            <select
-              value={selectedPatientId}
-              onChange={(e) => handleExistingPatientChange(e.target.value)}
-              style={{
-                flex: 1,
-                padding: '7px 10px',
-                borderRadius: 'var(--radius)',
-                border: '1px solid var(--bd)',
-                backgroundColor: 'var(--panel)',
-                color: 'var(--ink)',
-                fontSize: '13px',
-                fontFamily: 'var(--fs)',
-                maxWidth: '460px',
-              }}
-            >
-              {existingPatients.map((p) => (
-                <option key={p.patient_id} value={p.patient_id}>
-                  {p.patient_id} — {p.full_name} ({p.cohort})
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-      </div>
-
-      {/* 1-Click Demo Presets Bar */}
+      {/* 1-Click Standard Report Presets Bar */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
           <span style={{ fontFamily: 'var(--fs)', fontSize: '13px', fontWeight: 600, color: 'var(--ink)' }}>
@@ -292,7 +213,7 @@ export const LabIntakePage: React.FC = () => {
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
           {presets.map((preset) => {
             const isSelected = selectedPresetId === preset.preset_id;
             const isCritical = preset.severity === 'CRITICAL';
@@ -317,7 +238,7 @@ export const LabIntakePage: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--fs)', fontSize: '13px', fontWeight: 600, color: 'var(--ink)' }}>
+                  <span style={{ fontFamily: 'var(--fs)', fontSize: '12px', fontWeight: 600, color: 'var(--ink)' }}>
                     {preset.title}
                   </span>
                   <span
@@ -361,7 +282,7 @@ export const LabIntakePage: React.FC = () => {
               <CheckCircle2 size={22} color="var(--low)" />
               <h2 style={{ fontFamily: 'var(--fs)', fontSize: '16px', fontWeight: 600, color: 'var(--ink)', margin: 0 }}>
                 {uploadResult.is_update
-                  ? `✓ Existing Record Successfully Updated: ${uploadResult.patient.full_name} (${uploadResult.patient_id})`
+                  ? `✓ Existing Record Overridden & Updated: ${uploadResult.patient.full_name} (${uploadResult.patient_id})`
                   : `✓ New Patient Profile Successfully Created: ${uploadResult.patient.full_name} (${uploadResult.patient_id})`}
               </h2>
             </div>
@@ -377,14 +298,14 @@ export const LabIntakePage: React.FC = () => {
                 border: '1px solid var(--low)',
               }}
             >
-              {uploadResult.is_update ? 'MOST RECENT VALUES UPDATED' : 'NEW PROFILE REGISTERED'}
+              {uploadResult.is_update ? 'MOST RECENT VALUES RECORDED' : 'NEW PATIENT PROFILE PROVISIONED'}
             </span>
           </div>
 
           <p style={{ fontSize: '12px', color: 'var(--mut)', margin: '0 0 14px 0' }}>
             {uploadResult.is_update
-              ? 'Patient parameters and risk scores have been strictly updated with the latest report findings. Historical consultation record preserved.'
-              : 'New patient registered in the central repository. Initial baseline biomarkers recorded.'}
+              ? 'Patient clinical parameters, biomarkers, and calibrated risk scores have been strictly updated with the latest report findings. Historical consultation record preserved.'
+              : 'New patient registered in the central repository. Initial baseline cardiac biomarkers and 4-head risk predictions recorded.'}
           </p>
 
           {/* Model Risk Scores Overview */}
@@ -437,7 +358,7 @@ export const LabIntakePage: React.FC = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Send size={15} color="#25D366" />
                   <span style={{ fontFamily: 'var(--fs)', fontSize: '12px', fontWeight: 600, color: 'var(--ink)' }}>
-                    Automated Urgent Notification Dispatched:
+                    Automated Urgent Notification Dispatched to Patient:
                   </span>
                 </div>
                 <span style={{ fontFamily: 'var(--fm)', fontSize: '10px', color: 'var(--mut)' }}>
@@ -467,12 +388,10 @@ export const LabIntakePage: React.FC = () => {
       <form onSubmit={handleUploadReport} className="pn" style={{ backgroundColor: 'var(--panel)' }}>
         <div style={{ borderBottom: '1px solid var(--bd)', paddingBottom: '12px', marginBottom: '16px' }}>
           <h2 style={{ fontFamily: 'var(--fs)', fontSize: '15px', fontWeight: 600, color: 'var(--ink)', margin: 0 }}>
-            Standard Laboratory Report Fields
+            Standard Diagnostic Laboratory Report Ingestion
           </h2>
           <p style={{ fontFamily: 'var(--fs)', fontSize: '12px', color: 'var(--mut)', margin: '2px 0 0 0' }}>
-            {intakeMode === 'existing'
-              ? `Updating most recent report findings for Patient: ${formData.patient_id} (${formData.full_name})`
-              : 'Registering new first-time patient profile and recording initial report.'}
+            Enter or verify the hospital-assigned Patient ID on the report. Existing records are automatically updated with the latest findings; new IDs create a fresh patient profile.
           </p>
         </div>
 
@@ -482,14 +401,51 @@ export const LabIntakePage: React.FC = () => {
           </div>
         )}
 
-        {/* Section 1: Demographics */}
+        {/* Section 1: Demographics & Hospital ID */}
         <div style={{ marginBottom: '16px' }}>
           <div style={{ fontFamily: 'var(--fs)', fontSize: '12px', fontWeight: 600, color: 'var(--mod)', marginBottom: '8px' }}>
-            1. Patient Demographics & Reporting Facility
+            1. Patient Demographics & Identification (Hospital Report Header)
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+            {/* Hospital-Assigned Patient ID */}
             <div>
-              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Patient Full Name</label>
+              <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--ink)', marginBottom: '3px' }}>
+                Hospital Patient ID (Assigned by Hospital / MRN) *
+              </label>
+              <input
+                type="text"
+                value={formData.patient_id || ''}
+                onChange={(e) => handleInputChange('patient_id', e.target.value)}
+                placeholder="e.g. PAT-0001 or PAT-0042"
+                required
+                style={{
+                  width: '100%',
+                  padding: '7px 8px',
+                  borderRadius: 'var(--radius)',
+                  border: isExistingPatient ? '2px solid var(--mod)' : '1px solid var(--bd)',
+                  backgroundColor: 'var(--panel)',
+                  color: 'var(--ink)',
+                  fontSize: '13px',
+                  fontFamily: 'var(--fm)',
+                  fontWeight: 600,
+                }}
+              />
+              <div style={{ marginTop: '4px', fontSize: '10px', minHeight: '16px' }}>
+                {isExistingPatient ? (
+                  <span style={{ color: 'var(--mod)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <RefreshCw size={11} /> Existing in DB: Latest report will override previous record
+                  </span>
+                ) : formData.patient_id?.trim() ? (
+                  <span style={{ color: 'var(--low)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <UserPlus size={11} /> New Patient ID: A new profile will be created automatically
+                  </span>
+                ) : null}
+              </div>
+            </div>
+
+            {/* Patient Full Name */}
+            <div>
+              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Patient Full Name *</label>
               <input
                 type="text"
                 value={formData.full_name}
@@ -498,8 +454,10 @@ export const LabIntakePage: React.FC = () => {
                 style={{ width: '100%', padding: '6px 8px', borderRadius: 'var(--radius)', border: '1px solid var(--bd)', backgroundColor: 'var(--panel)', color: 'var(--ink)', fontSize: '13px' }}
               />
             </div>
+
+            {/* Contact Phone */}
             <div>
-              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Contact Phone</label>
+              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Contact Phone (for Urgent Advisories) *</label>
               <input
                 type="text"
                 value={formData.phone}
@@ -508,8 +466,10 @@ export const LabIntakePage: React.FC = () => {
                 style={{ width: '100%', padding: '6px 8px', borderRadius: 'var(--radius)', border: '1px solid var(--bd)', backgroundColor: 'var(--panel)', color: 'var(--ink)', fontSize: '13px' }}
               />
             </div>
+
+            {/* Age */}
             <div>
-              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Age (Years)</label>
+              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Age (Years) *</label>
               <input
                 type="number"
                 value={formData.age}
@@ -518,6 +478,8 @@ export const LabIntakePage: React.FC = () => {
                 style={{ width: '100%', padding: '6px 8px', borderRadius: 'var(--radius)', border: '1px solid var(--bd)', backgroundColor: 'var(--panel)', color: 'var(--ink)', fontSize: '13px' }}
               />
             </div>
+
+            {/* Biological Sex */}
             <div>
               <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Biological Sex</label>
               <select
@@ -527,6 +489,20 @@ export const LabIntakePage: React.FC = () => {
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
+              </select>
+            </div>
+
+            {/* Clinical Cohort */}
+            <div>
+              <label style={{ display: 'block', fontSize: '11px', color: 'var(--mut)', marginBottom: '3px' }}>Assigned Follow-Up Cohort</label>
+              <select
+                value={formData.cohort}
+                onChange={(e) => handleInputChange('cohort', e.target.value)}
+                style={{ width: '100%', padding: '6px 8px', borderRadius: 'var(--radius)', border: '1px solid var(--bd)', backgroundColor: 'var(--panel)', color: 'var(--ink)', fontSize: '13px' }}
+              >
+                <option value="Cohort B: Post-Event Discharge (Post-MI)">Cohort B: Post-Event Discharge (Post-MI)</option>
+                <option value="Cohort A: Hypertension with Lipids">Cohort A: Hypertension with Lipids</option>
+                <option value="Cohort C: Diabetic Cardiac Risk">Cohort C: Diabetic Cardiac Risk</option>
               </select>
             </div>
           </div>
@@ -653,10 +629,10 @@ export const LabIntakePage: React.FC = () => {
           <PrimaryButton
             type="submit"
             disabled={loading}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', minWidth: '240px', backgroundColor: 'var(--mod)' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', minWidth: '260px', backgroundColor: 'var(--mod)' }}
           >
             <Zap size={16} />
-            {loading ? 'Processing & Updating...' : intakeMode === 'existing' ? '⚡ Update Existing Patient Record' : '⚡ Register New Patient Profile'}
+            {loading ? 'Processing & Ingesting Report...' : '⚡ Ingest Report & Calculate Risks'}
           </PrimaryButton>
         </div>
       </form>

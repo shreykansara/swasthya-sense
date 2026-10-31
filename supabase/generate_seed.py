@@ -88,3 +88,4 @@ insert into public.patients (
 
 if __name__ == "__main__":
     main()
+
