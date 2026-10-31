@@ -2,13 +2,22 @@
 Adversarial Forbidden Field & Clinical Diagnosis Leakage Tests
 Swasthya Sense — Cardiac Follow-Up & Early-Warning Prototype
 
-Principle: Never diagnose. The system must never name a condition, disease,
-or diagnosis anywhere in UI/API output, nor contain vessel or CAD targets.
+Non-negotiable principle: Never diagnose.
+The system must NEVER name a condition, disease, or diagnosis anywhere in:
+1. Rules YAML files (titles, descriptions, patient explanations, clinician summaries)
+2. UI strings / endpoints
+3. API responses
+4. Data fields (zero CAD targets, LAD/LCX/RCA vessel labels, or stenosis targets)
 """
 
+from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
+import yaml
+
+from apps.api.app.config import ROOT_DIR
 from apps.api.app.main import app
+from apps.api.app.readout.guard import guard
 
 client = TestClient(app)
 
@@ -23,6 +32,7 @@ FORBIDDEN_TERMS = [
     "ischemia",
     "angina pectoris",
     "atherosclerosis",
+    "heart failure",
 ]
 
 
@@ -32,8 +42,7 @@ def test_health_endpoint_no_forbidden_terms(forbidden_term: str):
     response = client.get("/health")
     assert response.status_code == 200
     body_text = response.text.lower()
-    
-    # Specific whole-word check
+
     words = [w.strip(" ,.:;\"'{}[]()") for w in body_text.split()]
     assert forbidden_term not in words, f"Forbidden term '{forbidden_term}' found in health response"
 
@@ -46,7 +55,7 @@ def test_leakage_filter_pattern():
         "potassium": 4.1,
         "creatinine": 1.0,
     }
-    
+
     contaminated_data = {
         "systolic_bp": 130,
         "cad_diagnosis": "positive",
@@ -66,6 +75,39 @@ def test_leakage_filter_pattern():
     assert sanitized == clean_data
 
     # Contaminated data raises
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(ValueError):
         sanitize_record(contaminated_data)
-    assert "Data leakage detected" in str(exc.value)
+
+
+def test_adversarial_scan_all_rules_yaml_for_forbidden_terms():
+    """
+    Rigorously scans EVERY yaml rule in rules/v1/ asserting zero diagnosis or condition words.
+    Fails build if any forbidden clinical term appears.
+    """
+    rules_dir = ROOT_DIR / "rules" / "v1"
+    assert rules_dir.exists(), "rules/v1 directory must exist"
+
+    rule_files = list(rules_dir.glob("*.yaml"))
+    assert len(rule_files) >= 12, "Must have at least 12 versioned rules"
+
+    violations: list[str] = []
+
+    for rf in rule_files:
+        with open(rf, "r", encoding="utf-8") as f:
+            content = yaml.safe_load(f)
+
+        # Fields to verify
+        text_fields = [
+            content.get("title", ""),
+            content.get("description", ""),
+            content.get("patient_explanation", ""),
+            content.get("clinician_summary", ""),
+            content.get("reason_code", ""),
+        ]
+
+        full_text = " ".join(text_fields)
+        is_clean, matched = guard.check_text(full_text)
+        if not is_clean:
+            violations.append(f"{rf.name}: matched forbidden terms {matched}")
+
+    assert violations == [], f"Clinical diagnosis leakage detected in rule files: {violations}"

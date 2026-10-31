@@ -1,0 +1,17 @@
+rule_id: RULE-SBP-CRIT-001
+version: '1.0'
+title: Critical Systolic Blood Pressure Elevation
+description: Flags systolic blood pressure readings at or above 180 mmHg.
+cohort: any
+urgency: urgent
+reason_code: CRITICAL_SYSTOLIC_BP
+conditions:
+- analyte: systolic_bp
+  operator: '>='
+  threshold: 180.0
+  unit: mmHg
+patient_explanation: Your systolic blood pressure reading is substantially above 180
+  mmHg. Urgent medical evaluation is advised.
+clinician_summary: Systolic BP >= 180 mmHg meets urgent escalation threshold.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

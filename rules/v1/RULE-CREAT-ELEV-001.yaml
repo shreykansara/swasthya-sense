@@ -1,0 +1,17 @@
+rule_id: RULE-CREAT-ELEV-001
+version: '1.0'
+title: Elevated Serum Creatinine
+description: Flags serum creatinine levels at or above 2.0 mg/dL.
+cohort: any
+urgency: soon
+reason_code: ELEVATED_SERUM_CREATININE
+conditions:
+- analyte: serum_creatinine
+  operator: '>='
+  threshold: 2.0
+  unit: mg/dL
+patient_explanation: Your creatinine level is higher than standard reference limits.
+  A clinician will review your kidney lab values soon.
+clinician_summary: Serum creatinine >= 2.0 mg/dL requires clinical review.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

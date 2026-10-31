@@ -1,0 +1,19 @@
+rule_id: RULE-WT-JUMP-001
+version: '1.0'
+title: Rapid Weight Increase
+description: Flags body weight increase of 2.0 kg or more within a short observation
+  window.
+cohort: cohort_c
+urgency: urgent
+reason_code: RAPID_WEIGHT_INCREASE
+conditions:
+- analyte: body_weight
+  operator: delta_gte
+  threshold: 2.0
+  unit: kg
+  lookback_days: 3
+patient_explanation: Your recorded weight increased by 2 kg or more in a few days.
+  Your care team needs to check your fluid balance urgently.
+clinician_summary: Weight gain >= 2.0 kg in <= 3 days requires rapid clinical check-in.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

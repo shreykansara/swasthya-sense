@@ -1,0 +1,18 @@
+rule_id: RULE-TROP-001
+version: '1.0'
+title: Markedly Elevated Cardiac Biomarker
+description: Flags Troponin I values exceeding the laboratory standard threshold of
+  0.04 ng/mL.
+cohort: any
+urgency: urgent
+reason_code: ELEVATED_CARDIAC_MARKER
+conditions:
+- analyte: troponin_i
+  operator: '>'
+  threshold: 0.04
+  unit: ng/mL
+patient_explanation: Your Troponin result was higher than the laboratory standard
+  limit. A clinician needs to review your values urgently.
+clinician_summary: Troponin I > 0.04 ng/mL requires immediate clinical assessment.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

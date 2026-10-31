@@ -1,0 +1,17 @@
+rule_id: RULE-GLUC-HIGH-001
+version: '1.0'
+title: High Fasting Blood Sugar
+description: Flags fasting glucose levels at or above 200 mg/dL.
+cohort: any
+urgency: soon
+reason_code: ELEVATED_FASTING_GLUCOSE
+conditions:
+- analyte: fasting_glucose
+  operator: '>='
+  threshold: 200.0
+  unit: mg/dL
+patient_explanation: Your fasting blood sugar reading is higher than standard ranges.
+  A clinician will review dietary and medication guidance soon.
+clinician_summary: Fasting glucose >= 200 mg/dL requires prioritized metabolic review.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

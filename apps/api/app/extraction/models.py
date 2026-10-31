@@ -24,7 +24,7 @@ class ExtractedAnalyte(BaseModel):
     upload_id: UUID
     analyte_id: str
     analyte_name: str
-    raw_text: str
+    raw_text: str = ""
     value: float | None = None
     unit: str | None = None
     reference_low: float | None = None
@@ -38,6 +38,18 @@ class ExtractedAnalyte(BaseModel):
     confirmed_value: float | None = None
     confirmed_by: UUID | None = None
     confirmed_at: datetime | None = None
+
+    @property
+    def analyte_key(self) -> str:
+        return self.analyte_id
+
+    @property
+    def display_name(self) -> str:
+        return self.analyte_name
+
+    @property
+    def is_confirmed(self) -> bool:
+        return bool(self.confirmed_at is not None or self.confirmed_value is not None)
 
 
 class ReportUploadRecord(BaseModel):
@@ -72,3 +84,8 @@ class ExtractionSummary(BaseModel):
     low_confidence_count: int
     plausible_range_flag_count: int
     extracted_values: list[ExtractedAnalyte]
+
+
+# Backward/Inter-module compatibility aliases
+ExtractedValueRecord = ExtractedAnalyte
+ExtractedValueConfirmation = ValueConfirmationItem

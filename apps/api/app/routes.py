@@ -35,6 +35,10 @@ from apps.api.app.extraction.models import (
     ReportUploadRecord,
 )
 from apps.api.app.extraction.service import extraction_service
+from apps.api.app.rules.models import CaseFlagRecord, ClinicalRule
+from apps.api.app.rules.service import case_flag_service
+from apps.api.app.rules.engine import rule_engine
+from pydantic import BaseModel
 from apps.api.app.readout.models import (
     AnalyteReadoutItem,
     ReadoutRequest,
@@ -224,6 +228,12 @@ def confirm_report_values(
             confirmations=payload.confirmed_values,
             confirmed_by=current_user.id,
         )
+        # Phase 7: Evaluate rules across confirmed values & persist case flags
+        case_flag_service.evaluate_and_persist_flags(
+            patient_id=updated.patient_id,
+            upload_id=updated.id,
+            confirmed_values=updated.extracted_values,
+        )
         return updated
     except ValueError as e:
         raise HTTPException(
@@ -320,3 +330,62 @@ def generate_plain_language_readout(
         readout_text=readout_text,
         items=items,
     )
+
+
+# ==========================================
+# Phase 7: Clinical Case Flags & Rule Governance
+# ==========================================
+
+class FlagOverrideRequest(BaseModel):
+    new_urgency: str
+    reason: str
+
+
+@api_router.get("/patients/{patient_id}/case-flags", response_model=list[CaseFlagRecord], tags=["Clinical Rules"])
+def get_patient_case_flags(
+    patient_id: UUID,
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
+):
+    """Fetches all active clinical urgency flags and 'why flagged' contributions for a patient."""
+    return case_flag_service.get_flags_for_patient(patient_id)
+
+
+@api_router.post("/case-flags/{flag_id}/override", response_model=CaseFlagRecord, tags=["Clinical Rules"])
+def override_case_flag(
+    flag_id: UUID,
+    req: FlagOverrideRequest,
+    current_user: Annotated[CurrentUser, Depends(require_role("clinician"))],
+):
+    """Clinician override endpoint: modifies flag urgency tier with mandatory audit reason."""
+    try:
+        return case_flag_service.record_clinician_override(
+            flag_id=flag_id,
+            clinician_id=current_user.id,
+            new_urgency=req.new_urgency,  # type: ignore
+            reason=req.reason,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+
+@api_router.get("/admin/rules", response_model=list[ClinicalRule], tags=["Rule Governance"])
+def list_clinical_rules(
+    current_user: Annotated[CurrentUser, Depends(require_role("admin"))],
+):
+    """Lists all versioned clinical rules with sign-off status."""
+    return rule_engine.rules
+
+
+@api_router.post("/admin/rules/{rule_id}/sign-off", response_model=ClinicalRule, tags=["Rule Governance"])
+def sign_off_clinical_rule(
+    rule_id: str,
+    current_user: Annotated[CurrentUser, Depends(require_role("admin"))],
+):
+    """Admin workflow to sign off and activate a clinical rule."""
+    from datetime import datetime, timezone
+    for r in rule_engine.rules:
+        if r.rule_id == rule_id:
+            r.signed_off_by = current_user.email
+            r.signed_off_at = datetime.now(timezone.utc).isoformat()
+            return r
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Rule '{rule_id}' not found.")

@@ -9,6 +9,7 @@ import { HealthWorkerHomePage } from './pages/HealthWorkerHomePage';
 import { ClinicianHomePage } from './pages/ClinicianHomePage';
 import { SupervisorHomePage } from './pages/SupervisorHomePage';
 import { AdminHomePage } from './pages/AdminHomePage';
+import { AdminRulesPage } from './pages/AdminRulesPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 const RootRedirect: React.FC = () => {
@@ -95,6 +96,14 @@ export const App: React.FC = () => {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <AdminHomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/rules"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminRulesPage />
             </ProtectedRoute>
           }
         />

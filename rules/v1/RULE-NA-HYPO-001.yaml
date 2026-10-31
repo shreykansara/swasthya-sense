@@ -1,0 +1,17 @@
+rule_id: RULE-NA-HYPO-001
+version: '1.0'
+title: Low Serum Sodium
+description: Flags serum sodium levels below 130 mEq/L.
+cohort: any
+urgency: urgent
+reason_code: LOW_SERUM_SODIUM
+conditions:
+- analyte: sodium
+  operator: <
+  threshold: 130.0
+  unit: mEq/L
+patient_explanation: Your sodium result is below the safe laboratory limit. Urgent
+  review by your healthcare provider is needed.
+clinician_summary: Sodium < 130 mEq/L indicates urgent electrolyte imbalance tier.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'

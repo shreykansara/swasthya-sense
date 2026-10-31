@@ -1,0 +1,17 @@
+rule_id: RULE-BNP-MOD-001
+version: '1.0'
+title: Moderately Elevated Natriuretic Peptide
+description: Flags NT-proBNP levels between 450 pg/mL and 999 pg/mL.
+cohort: cohort_c
+urgency: soon
+reason_code: MODERATE_NTPROBNP
+conditions:
+- analyte: nt_probnp
+  operator: '>='
+  threshold: 450.0
+  unit: pg/mL
+patient_explanation: Your peptide lab value is higher than standard reference limits.
+  A clinician will review your care plan soon.
+clinician_summary: NT-proBNP >= 450 pg/mL requires prioritized clinical review.
+signed_off_by: admin@swasthya.test
+signed_off_at: '2026-10-31T00:00:00Z'
