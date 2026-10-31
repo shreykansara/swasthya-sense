@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppLayout } from '../components/layout/AppLayout';
 import { Panel } from '../components/ui';
+import { PlainReadoutCard } from '../components/PlainReadoutCard';
 import { useAuthStore } from '../store/useAuthStore';
 
 export const PatientHomePage: React.FC = () => {
   const { user } = useAuthStore();
+  const [showReadout, setShowReadout] = useState(true);
 
   return (
     <AppLayout title="Patient Home">
@@ -42,11 +44,19 @@ export const PatientHomePage: React.FC = () => {
           </Panel>
         </Link>
 
-        <Panel className="flex flex-col gap-1">
-          <span className="type-caption text-mut font-semibold uppercase">Step 3</span>
-          <h4 className="font-medium text-sm">Plain-Language Readout</h4>
-          <p className="text-xs text-mut">Review your confirmed lab numbers and lab reference ranges simplified without diagnosis.</p>
-        </Panel>
+        <button
+          onClick={() => setShowReadout(!showReadout)}
+          className="text-left group cursor-pointer focus:outline-none"
+        >
+          <Panel className="flex flex-col gap-1 border-acc/40 hover:border-acc transition-colors h-full">
+            <span className="type-caption text-acc font-semibold uppercase flex items-center justify-between">
+              <span>Step 3</span>
+              <span className="text-xs text-slate-400">{showReadout ? 'Hide ▲' : 'Show ▼'}</span>
+            </span>
+            <h4 className="font-medium text-sm text-ink">Plain-Language Readout</h4>
+            <p className="text-xs text-mut">Review your confirmed lab numbers simplified into Class-6 reading level.</p>
+          </Panel>
+        </button>
 
         <Panel className="flex flex-col gap-1">
           <span className="type-caption text-mut font-semibold uppercase">Security</span>
@@ -54,6 +64,12 @@ export const PatientHomePage: React.FC = () => {
           <p className="text-xs text-mut">Audit trail of who accessed your records and option to request full erasure.</p>
         </Panel>
       </div>
+
+      {showReadout && (
+        <div className="mt-2">
+          <PlainReadoutCard />
+        </div>
+      )}
     </AppLayout>
   );
 };
