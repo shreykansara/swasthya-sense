@@ -1,0 +1,12 @@
+{
+  "name": "swasthya-sense",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:web": "npm --prefix apps/web run dev",
+    "build:web": "npm --prefix apps/web run build",
+    "dev:api": "uvicorn apps.api.app.main:app --reload --port 8000",
+    "test:api": "pytest apps/api/tests -v"
+  }
+}
