@@ -1,10 +1,85 @@
 /**
  * Authentication and User Profile Store (Zustand)
  * Integrates with Supabase Auth with persistent session and demo persona presets.
+ * Enforces strict Role-Based Access Control (RBAC):
+ * - Public self-registered users are IMMUTABLY patients.
+ * - Clinician (Doctor) and Laboratory Technician roles are strictly restricted
+ *   to pre-authorized hospital administration accounts.
  */
 
 import { create } from 'zustand';
 import { supabase, isSupabaseConfigured, UserRole, UserProfile, DEMO_PROFILES } from '../lib/supabase';
+
+interface StoredAccount {
+  id: string;
+  email: string;
+  password?: string;
+  role: UserRole;
+  full_name: string;
+  patient_id?: string;
+  created_at?: string;
+}
+
+const STORAGE_KEY = 'swasthya_auth_user';
+const ACCOUNTS_STORAGE_KEY = 'swasthya_registered_accounts';
+
+/**
+ * Returns all registered accounts, initializing default authorized staff profiles if not present.
+ */
+const getRegisteredAccounts = (): Record<string, StoredAccount> => {
+  try {
+    const raw = localStorage.getItem(ACCOUNTS_STORAGE_KEY);
+    const accounts: Record<string, StoredAccount> = raw ? JSON.parse(raw) : {};
+
+    // 1. Authorized Doctor Account (Hospital Pre-provisioned)
+    if (!accounts['doctor@swasthya.internal']) {
+      accounts['doctor@swasthya.internal'] = {
+        id: DEMO_PROFILES.doctor.id,
+        email: DEMO_PROFILES.doctor.email.toLowerCase(),
+        password: 'password',
+        role: 'doctor',
+        full_name: DEMO_PROFILES.doctor.full_name,
+      };
+    }
+
+    // 2. Authorized Lab Tech Account (Hospital Pre-provisioned)
+    if (!accounts['lab@swasthya.internal']) {
+      accounts['lab@swasthya.internal'] = {
+        id: DEMO_PROFILES.lab_technician.id,
+        email: DEMO_PROFILES.lab_technician.email.toLowerCase(),
+        password: 'password',
+        role: 'lab_technician',
+        full_name: DEMO_PROFILES.lab_technician.full_name,
+      };
+    }
+
+    // 3. Demo Patient Account
+    if (!accounts['patient@swasthya.internal']) {
+      accounts['patient@swasthya.internal'] = {
+        id: DEMO_PROFILES.patient.id,
+        email: DEMO_PROFILES.patient.email.toLowerCase(),
+        password: 'password',
+        role: 'patient',
+        full_name: DEMO_PROFILES.patient.full_name,
+        patient_id: 'PAT-0001',
+      };
+    }
+
+    return accounts;
+  } catch (e) {
+    return {};
+  }
+};
+
+const saveRegisteredAccount = (account: StoredAccount) => {
+  try {
+    const accounts = getRegisteredAccounts();
+    accounts[account.email.trim().toLowerCase()] = account;
+    localStorage.setItem(ACCOUNTS_STORAGE_KEY, JSON.stringify(accounts));
+  } catch (e) {
+    console.warn('Error saving registered account to localStorage:', e);
+  }
+};
 
 interface AuthState {
   user: UserProfile | null;
@@ -22,8 +97,6 @@ interface AuthState {
   switchPatientAccount: (patientId: string, patientName: string) => void;
 }
 
-const STORAGE_KEY = 'swasthya_auth_user';
-
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isAuthenticated: false,
@@ -36,7 +109,21 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        const parsed = JSON.parse(stored);
+        const parsed: UserProfile = JSON.parse(stored);
+        const normalized = (parsed.email || '').trim().toLowerCase();
+        const accounts = getRegisteredAccounts();
+
+        // STRICT ROLE RECONCILIATION:
+        // Prevent any stale or corrupted session from elevating a patient to clinician
+        if (accounts[normalized]) {
+          parsed.role = accounts[normalized].role;
+          parsed.patient_id = accounts[normalized].patient_id || parsed.patient_id;
+        } else if (normalized !== 'doctor@swasthya.internal' && normalized !== 'lab@swasthya.internal') {
+          // Public users are strictly patients
+          parsed.role = 'patient';
+        }
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
         set({ user: parsed, isAuthenticated: true, isLoading: false });
         return;
       } catch (e) {
@@ -55,25 +142,27 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             .eq('id', session.user.id)
             .single();
 
-          if (profile) {
-            const userProfile: UserProfile = {
-              id: session.user.id,
-              email: session.user.email || '',
-              role: profile.role,
-              full_name: profile.full_name,
-              patient_id: profile.patient_id,
-            };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(userProfile));
-            set({ user: userProfile, isAuthenticated: true, isLoading: false });
-            return;
-          }
+          // Resolved role defaults strictly to 'patient', never elevated to 'doctor'
+          const resolvedRole: UserRole =
+            profile?.role || session.user.user_metadata?.role || 'patient';
+
+          const userProfile: UserProfile = {
+            id: session.user.id,
+            email: session.user.email || '',
+            role: resolvedRole,
+            full_name: profile?.full_name || session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User',
+            patient_id: profile?.patient_id || session.user.user_metadata?.patient_id,
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(userProfile));
+          set({ user: userProfile, isAuthenticated: true, isLoading: false });
+          return;
         }
       } catch (err) {
         console.warn('Supabase auth session lookup error:', err);
       }
     }
 
-    // No active session found - prompt user to login or use demo credentials
+    // No active session found
     set({ user: null, isAuthenticated: false, isLoading: false });
   },
 
@@ -103,19 +192,21 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   loginWithPassword: async (email: string, password: string): Promise<boolean> => {
     set({ isLoading: true, error: null });
+    const normalizedEmail = email.trim().toLowerCase();
 
-    // Check demo credentials match
+    // 1. Check pre-authorized demo staff credentials first
     for (const [role, demo] of Object.entries(DEMO_PROFILES)) {
-      if (demo.email.toLowerCase() === email.toLowerCase() && (password === 'password' || password.length >= 6)) {
+      if (demo.email.toLowerCase() === normalizedEmail && (password === 'password' || password.length >= 6)) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(demo));
-        set({ user: demo, isAuthenticated: true, isLoading: false });
+        set({ user: demo, isAuthenticated: true, isLoading: false, error: null });
         return true;
       }
     }
 
+    // 2. If Supabase is configured, attempt Supabase auth
     if (isSupabaseConfigured) {
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
         if (error) throw error;
         if (data.user) {
           const { data: profile } = await supabase
@@ -124,99 +215,129 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             .eq('id', data.user.id)
             .single();
 
+          // Role must match profile or metadata; fallback to 'patient'
+          const resolvedRole: UserRole =
+            profile?.role || data.user.user_metadata?.role || 'patient';
+
           const userProfile: UserProfile = {
             id: data.user.id,
-            email: data.user.email || '',
-            role: (profile?.role as UserRole) || 'doctor',
-            full_name: profile?.full_name || email.split('@')[0],
-            patient_id: profile?.patient_id,
+            email: data.user.email || normalizedEmail,
+            role: resolvedRole,
+            full_name: profile?.full_name || data.user.user_metadata?.full_name || normalizedEmail.split('@')[0],
+            patient_id: profile?.patient_id || data.user.user_metadata?.patient_id,
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(userProfile));
-          set({ user: userProfile, isAuthenticated: true, isLoading: false });
+          set({ user: userProfile, isAuthenticated: true, isLoading: false, error: null });
           return true;
         }
       } catch (err: any) {
-        set({ error: err.message || 'Login failed', isLoading: false });
-        return false;
+        console.warn('Supabase sign-in failed, checking registered accounts:', err?.message);
       }
     }
 
-    // Local fallback for custom email
-    const inferredRole: UserRole = email.includes('lab')
-      ? 'lab_technician'
-      : email.includes('patient')
-      ? 'patient'
-      : 'doctor';
+    // 3. Check registered persistent accounts
+    const accounts = getRegisteredAccounts();
+    const account = accounts[normalizedEmail];
+    if (account) {
+      // Validate password
+      if (account.password && account.password !== password) {
+        set({ error: 'Incorrect password. Please verify your credentials.', isLoading: false });
+        return false;
+      }
 
-    const customUser: UserProfile = {
-      id: `usr-${Date.now()}`,
-      email,
-      role: inferredRole,
-      full_name: email.split('@')[0].toUpperCase(),
-      patient_id: inferredRole === 'patient' ? 'PAT-0001' : undefined,
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(customUser));
-    set({ user: customUser, isAuthenticated: true, isLoading: false });
-    return true;
+      // STRICT ROLE PRESERVATION:
+      // The role recorded at registration (patient) is strictly enforced.
+      const userProfile: UserProfile = {
+        id: account.id,
+        email: account.email,
+        role: account.role, // Strictly preserves 'patient'
+        full_name: account.full_name,
+        patient_id: account.patient_id,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProfile));
+      set({ user: userProfile, isAuthenticated: true, isLoading: false, error: null });
+      return true;
+    }
+
+    // 4. Reject unrecognized email (NO auto-creation of clinician accounts!)
+    set({
+      error: 'Account not found with this email. If you are a patient, please register your account first. Clinician and laboratory credentials must be issued by hospital administration.',
+      isLoading: false,
+    });
+    return false;
   },
 
   signUp: async (
     email: string,
     password: string,
-    role: UserRole,
+    _role: UserRole, // Ignored: public self-registration is strictly and immutably PATIENT
     fullName: string,
     patientId?: string
   ): Promise<boolean> => {
     set({ isLoading: true, error: null });
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // 1. Invariant: Public accounts are strictly 'patient'
+    const role: UserRole = 'patient';
+    const assignedPid = patientId?.trim() || `PAT-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const accounts = getRegisteredAccounts();
+    if (accounts[normalizedEmail]) {
+      set({ error: 'An account with this email address already exists. Please sign in.', isLoading: false });
+      return false;
+    }
 
     if (isSupabaseConfigured) {
       try {
         const { data, error } = await supabase.auth.signUp({
-          email,
+          email: normalizedEmail,
           password,
           options: {
-            data: { role, full_name: fullName, patient_id: patientId },
+            data: { role: 'patient', full_name: fullName, patient_id: assignedPid },
           },
         });
         if (error) throw error;
         if (data.user) {
-          await supabase.from('profiles').insert([
-            {
-              id: data.user.id,
-              email,
-              role,
-              full_name: fullName,
-              patient_id: patientId,
-            },
-          ]);
-
-          const userProfile: UserProfile = {
-            id: data.user.id,
-            email,
-            role,
-            full_name: fullName,
-            patient_id: patientId,
-          };
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(userProfile));
-          set({ user: userProfile, isAuthenticated: true, isLoading: false });
-          return true;
+          try {
+            await supabase.from('profiles').insert([
+              {
+                id: data.user.id,
+                email: normalizedEmail,
+                role: 'patient',
+                full_name: fullName,
+                patient_id: assignedPid,
+              },
+            ]);
+          } catch (profileErr) {
+            console.warn('Supabase profile insertion error:', profileErr);
+          }
         }
       } catch (err: any) {
-        set({ error: err.message || 'Sign up failed', isLoading: false });
-        return false;
+        console.warn('Supabase signup error (falling back to secure local store):', err);
       }
     }
 
-    // Local simulated profile creation
-    const newProfile: UserProfile = {
+    // Save to persistent accounts repository with immutable patient role
+    const newAccount: StoredAccount = {
       id: `usr-${Date.now()}`,
-      email,
-      role,
-      full_name: fullName,
-      patient_id: patientId || (role === 'patient' ? 'PAT-0001' : undefined),
+      email: normalizedEmail,
+      password,
+      role: 'patient', // STRICTLY PATIENT
+      full_name: fullName.trim(),
+      patient_id: assignedPid,
+      created_at: new Date().toISOString(),
     };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newProfile));
-    set({ user: newProfile, isAuthenticated: true, isLoading: false });
+    saveRegisteredAccount(newAccount);
+
+    const userProfile: UserProfile = {
+      id: newAccount.id,
+      email: newAccount.email,
+      role: 'patient',
+      full_name: newAccount.full_name,
+      patient_id: newAccount.patient_id,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(userProfile));
+    set({ user: userProfile, isAuthenticated: true, isLoading: false, error: null });
     return true;
   },
 
@@ -229,7 +350,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     }
     localStorage.removeItem(STORAGE_KEY);
-    set({ user: null, isAuthenticated: false });
+    set({ user: null, isAuthenticated: false, error: null });
   },
 }));
-

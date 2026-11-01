@@ -168,13 +168,55 @@ export const App: React.FC = () => {
               }
             />
 
-            {/* 8. Stepper Views */}
-            <Route path="/welcome" element={<WelcomePage />} />
-            <Route path="/enter-data" element={<DataEntryPage />} />
-            <Route path="/results" element={<ResultsPage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/model-info" element={<ModelInfoPage />} />
-            <Route path="/design-system" element={<DesignSystemPage />} />
+            {/* 8. Stepper Views (Clinical Tooling) */}
+            <Route
+              path="/welcome"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <WelcomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/enter-data"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <DataEntryPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/results"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <ResultsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reports"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <ReportsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/model-info"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <ModelInfoPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/design-system"
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <DesignSystemPage />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
